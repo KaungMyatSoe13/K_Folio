@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Sun, Moon, X, Minimize2, Square } from "lucide-react";
 
 const Navbar = () => {
-  const [activeTab, setActiveTab] = useState("fine-thought.js");
+  const [activeTab, setActiveTab] = useState("K_folio.js");
 
-  const tabs = [{ name: "fine-thought.js", isActive: true }];
+  const tabs = [{ name: "K_folio.js", isActive: true }];
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);

@@ -1,3 +1,4 @@
+// components/SideNavbar.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 
@@ -16,7 +17,6 @@ const SideNavbar = () => {
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
-  // Calculate how many lines fit exactly in the container
   const lineHeight = 20;
   const totalLines = Math.floor(containerHeight / lineHeight);
 
@@ -25,17 +25,16 @@ const SideNavbar = () => {
       className="w-7 bg-[#282828] border-r border-gray-600"
       style={{ height: `${containerHeight}px` }}
     >
-      {/* Line Numbers */}
       <div className="h-full flex flex-col">
         {Array.from({ length: totalLines }, (_, index) => (
           <div
             key={index + 1}
-            className="h-5 flex items-center justify-end pr-2 text-[0.6rem] font-mono text-gray-500 hover:text-gray-400 cursor-default flex-shrink-0"
+            className="h-5 flex items-center justify-end pr-2 text-[0.9rem] font-mono text-gray-500 hover:text-gray-400 cursor-default"
+            style={{ lineHeight: "20px" }} // Match Terminal
           >
             {index + 1}
           </div>
         ))}
-        {/* Fill remaining space if any */}
         <div className="flex-1" />
       </div>
     </div>

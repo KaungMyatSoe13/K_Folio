@@ -6,6 +6,11 @@
   --foreground: #eaeaea; /* light text */
 }
 
+pre {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
