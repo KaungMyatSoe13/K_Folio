@@ -1,29 +1,14 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import {
-  fileSystem,
-  getCurrentNode,
-  listDirectory,
-  readFile,
-} from "../../app/lib/fileSystem";
-import { portfolioItems } from "../../app/data/portfolio";
-import type { PortfolioItem as PortfolioItemType } from "../../app/lib/types";
-import { handleCommand } from "../../components/Terminal/CommandHandler";
 
-const TerminalText = `Windows PowerShell Copyright (C) Microsoft Corporation.
-All rights reserved. Install the latest PowerShell for new features and improvements!
-https://aka.ms/PSWindows Loading personal and system profiles took 2116ms.
-Press 'Enter' to start!
-`;
+const TerminalText = `Press 'Enter' to start!`;
 
-export const useTerminal = (onMenuClick: (content: string) => void) => {
+export const useTerminal = () => {
   const [displayedText, setDisplayedText] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
   const [output, setOutput] = useState<string[]>([]);
-  const [showBoxes, setShowBoxes] = useState<boolean>(false);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [animationDone, setAnimationDone] = useState<boolean>(false);
-  const [currentPath, setCurrentPath] = useState<string[]>(["K@Portfolio"]);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Typewriter effect
@@ -48,70 +33,30 @@ export const useTerminal = (onMenuClick: (content: string) => void) => {
     }
   }, [animationDone]);
 
-  // Handle user input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };
 
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      if (userInput.trim()) {
-        const commandParts = userInput.trim().split(" ");
-        const command = commandParts[0].toLowerCase();
-        const arg = commandParts[1];
-
-        const currentNode = getCurrentNode(fileSystem, currentPath);
-
-        const result = handleCommand(
-          command,
-          arg,
-          currentNode,
-          currentPath,
-          portfolioItems,
-          {
-            setShowMenu,
-            setShowBoxes,
-            setOutput,
-            setCurrentPath,
-            output,
-            currentPath,
-          }
-        );
-
-        if (result.response) {
-          setOutput((prev) => [
-            ...prev,
-            `${currentPath[currentPath.length - 1]}$ ${userInput}\n${
-              result.response
-            }`,
-          ]);
-        }
-
-        if (result.newPath) {
-          setCurrentPath(result.newPath);
-        }
-
-        if (result.showBoxes !== undefined) {
-          setShowBoxes(result.showBoxes);
-        }
-
-        if (result.showMenu !== undefined) {
-          setShowMenu(result.showMenu);
-        }
-
-        if (result.clearOutput) {
-          setOutput([]);
-        }
-
-        setUserInput("");
-      } else {
-        // Handle empty Enter key press
-        setShowMenu(true);
+      if (userInput.trim() === "clear") {
+        // Clear command - this should be checked FIRST
+        setOutput([]);
+        setShowMenu(false);
+      } else if (userInput.trim()) {
+        // Any other text - show command not found
         setOutput((prev) => [
           ...prev,
-          `${currentPath[currentPath.length - 1]}$ \n`,
+          `K@Portfolio$ ${userInput}`,
+          `Command not found: ${userInput}`,
         ]);
+        setShowMenu(false);
+      } else {
+        // Empty Enter - show menu
+        setShowMenu(true);
+        setOutput((prev) => [...prev, `K@Portfolio$ `]);
       }
+      setUserInput("");
     }
   };
 
@@ -119,16 +64,10 @@ export const useTerminal = (onMenuClick: (content: string) => void) => {
     displayedText,
     userInput,
     output,
-    showBoxes,
     showMenu,
     animationDone,
-    currentPath,
     inputRef,
     handleInputChange,
     handleInputSubmit,
-    portfolioItems,
-    setShowMenu,
-    setShowBoxes,
-    setOutput,
   };
 };

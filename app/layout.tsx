@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import SideNavbar from "@/components/SideNavbar";
+import Navbar from "@/components/Navbars/Navbar";
+import SideNavbar from "@/components/Navbars/SideNavbar";
 
 import "./globals.css";
 
@@ -17,9 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
         <div className="flex">
-          <SideNavbar />
           <main className="flex-1">{children}</main>
         </div>
       </body>
