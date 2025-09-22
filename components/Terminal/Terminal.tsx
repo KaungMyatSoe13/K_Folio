@@ -1,8 +1,20 @@
 "use client";
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useTerminal } from "../../app/hooks/useTerminal";
 import Menu from "../Menu/Menu";
 import SideNavbar from "../Navbars/SideNavbar";
+import { vt323 } from "../../app/fonts/fonts";
+
+// Import working components directly
+import ShopShop from "../../app/projects/ShopShop";
+import PeakFit from "../../app/projects/Peakfit";
+import FaceRecognitionSystem from "../../app/projects/FaceRecognitionSystem";
+import IJudge from "../../app/projects/iJudge";
+
+// Use dynamic import for MyanglishTranslator to avoid the import issue
+const MyanglishTranslator = lazy(
+  () => import("../../app/projects/MyanglishTranslator")
+);
 
 interface Tab {
   id: string;
@@ -17,6 +29,16 @@ interface TerminalProps {
   activeTab: string;
   onProjectClick?: (projectName: string, projectContent: string) => void;
 }
+
+// Loading component for Suspense
+const LoadingComponent = () => (
+  <div className={`${vt323.className} p-4`}>
+    <div className="text-orange-400 text-xl mb-4">Loading...</div>
+    <div className="text-gray-300">
+      Loading Myanglish Translator component...
+    </div>
+  </div>
+);
 
 export default function Terminal({
   onMenuClick,
@@ -37,10 +59,58 @@ export default function Terminal({
 
   // Get the current tab's content
   const currentTab = tabs.find((tab) => tab.id === activeTab);
-  const isDefaultTab = currentTab?.type === "default";
 
   // Check if we're on mobile
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // Helper function to render the correct project component
+  const renderProjectComponent = (tabName: string) => {
+    // Extract project name from tab name (remove .js extension and spaces)
+    const projectName = tabName
+      .replace(/\.js$/, "")
+      .replace(/\s+/g, "")
+      .toLowerCase();
+
+    console.log("Rendering project:", projectName, "from tab:", tabName);
+
+    switch (projectName) {
+      case "shopshop":
+        return <ShopShop />;
+
+      case "peakfit":
+        return <PeakFit />;
+
+      case "myanglish_translator":
+        return (
+          <Suspense fallback={<LoadingComponent />}>
+            <MyanglishTranslator />
+          </Suspense>
+        );
+
+      case "face_recognition_system":
+        return <FaceRecognitionSystem />;
+
+      case "ijudge":
+        return <IJudge />;
+      // Add more cases for your projects
+      default:
+        return (
+          <div className={`${vt323.className} p-4`}>
+            <div className="text-red-400 text-xl mb-4">Project Not Found</div>
+            <div className="text-gray-300">
+              No component found for: {tabName}
+            </div>
+            <div className="text-gray-400 text-sm mt-2">
+              Normalized name: {projectName}
+            </div>
+            <div className="mt-4 text-gray-400 text-sm">
+              Available projects: ShopShop, PeakFit, FaceRecognitionSystem,
+              MyanglishTranslator
+            </div>
+          </div>
+        );
+    }
+  };
 
   // If it's a project tab
   if (currentTab?.type === "project") {
@@ -51,19 +121,16 @@ export default function Terminal({
       return null; // Don't render anything here
     }
 
-    // On desktop, show the project content as before
+    // On desktop, show the project content directly
     return (
-      <div className="flex flex-1 border-r border-t border-b border-gray-600 font-mono text-[#eaeaea] bg-[#282828] max-h-screen">
+      <div className="flex flex-1 border-r border-t border-b border-gray-600 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex flex-row">
+        <SideNavbar />
+
         <div
-          className="h-full overflow-y-auto"
+          className="h-full overflow-y-auto flex-1 flex flex-row"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          <div className="flex flex-1 flex-row">
-            <pre className="whitespace-pre-wrap text-sm leading-6 flex flex-row gap-2">
-              <SideNavbar />
-              {currentTab.content}
-            </pre>
-          </div>
+          {renderProjectComponent(currentTab.name)}
         </div>
       </div>
     );
@@ -71,24 +138,37 @@ export default function Terminal({
 
   // Default terminal view for K_folio.js tab
   return (
-    <div className="flex-1 border-r border-t border-b border-gray-600 font-mono text-[#eaeaea] bg-[#282828] bg-blue-500 min-h-screen flex flex-row">
+    <div className="flex-1 border-r border-t border-b border-gray-600 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex flex-row">
       <SideNavbar />
       <div className="flex flex-col flex-1">
         <pre
-          className="!m-0 !p-0 whitespace-pre-wrap"
+          className={`!m-0 !p-0 whitespace-pre-wrap ml-4 text-md sm:text-lg lg:text-xl ${vt323.className}`}
           style={{ lineHeight: "20px", margin: 0, padding: 0 }}
         >
           {displayedText}
-          {output.length > 0 && "\n"}
-          {output.join("\n")}
         </pre>
+
+        {/* Show menu after initial text */}
         {showMenu && <Menu onMenuClick={onMenuClick} />}
+
+        {/* Show command history/output after menu, just above the current input */}
+        {output.length > 0 && (
+          <pre
+            className={`!m-0 !p-0 whitespace-pre-wrap ml-4 text-md sm:text-lg lg:text-xl ${vt323.className}`}
+            style={{ lineHeight: "20px", margin: 0, padding: 0 }}
+          >
+            {"\n" + output.join("\n")}
+          </pre>
+        )}
+
         {animationDone && (
           <pre
             className="!m-0 !p-0 -wrap pl-4"
             style={{ lineHeight: "20px", margin: 0, padding: 0 }}
           >
-            <span className="inline-flex items-center">
+            <span
+              className={`inline-flex items-center text-md sm:text-lg lg:text-xl ${vt323.className} h-3 sm:h-5 mt-3 sm:mt-2`}
+            >
               <span>K@Portfolio$ </span>
               <input
                 ref={inputRef}
@@ -96,7 +176,7 @@ export default function Terminal({
                 value={userInput}
                 onChange={handleInputChange}
                 onKeyDown={handleInputSubmit}
-                className="bg-transparent border-none outline-none text-[#eaeaea] font-mono w-auto min-w-[50px]"
+                className="bg-transparent border-none outline-none text-[#eaeaea] w-auto min-w-[50px]"
                 autoFocus={animationDone}
               />
             </span>

@@ -37,7 +37,7 @@ const SideNavbar = () => {
   return (
     <div
       ref={containerRef}
-      className="w-7 bg-[#282828] border-r border-gray-600 h-full"
+      className="w-7 bg-[#282828] border-r border-gray-600 h-full mr-2"
     >
       <div className="h-full flex flex-col">
         {Array.from({ length: totalLines }, (_, index) => (

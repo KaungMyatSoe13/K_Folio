@@ -6,28 +6,28 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    name: "Arthur G",
-    platform: "WooCommerce",
-    tech: "Next.js + PHP",
+    name: "PeakFit",
+    platform: "Mobile",
+    tech: "React Native/TypeScript/Firebase",
   },
   {
-    name: "Assembly Talent",
-    platform: "WordPress + JobAdder",
-    tech: "Next.js + PHP",
+    name: "ShopShop",
+    platform: "Web App",
+    tech: "MERN + Cloudinary",
   },
   {
-    name: "Black Fridye",
-    platform: "Shopify",
-    tech: "HTML/SCSS/JS + Liquid",
+    name: "Myanglish Translator",
+    platform: "Web App",
+    tech: "React + Tailwind CSS",
   },
   {
-    name: "Bloomingdales",
-    platform: "WooCommerce + MYOB",
-    tech: "React + PHP",
+    name: "Face Recognition System",
+    platform: "AI/ML",
+    tech: "TensorFlow + PyTorch + VGG",
   },
   {
-    name: "Junglefy",
-    platform: "Craft",
-    tech: "Next.js",
+    name: "iJudge",
+    platform: "Web App",
+    tech: "DistilBERT + Flask",
   },
 ];

@@ -3,7 +3,6 @@ import { useState } from "react";
 import Terminal from "@/components/Terminal/Terminal";
 import SideTab from "@/components/Portfolio/SideTab";
 import Navbar from "@/components/Navbars/Navbar";
-import SideNavbar from "@/components/Navbars/SideNavbar";
 import SideTabNavbar from "@/components/Navbars/SideTabNavbar";
 
 interface Tab {
@@ -11,6 +10,12 @@ interface Tab {
   name: string;
   content: string;
   type: "default" | "project";
+}
+
+interface MenuTab {
+  id: string;
+  name: string;
+  content: string;
 }
 
 export default function Home() {
@@ -28,13 +33,78 @@ export default function Home() {
     },
   ]);
 
+  // Side tab management state
+  const [sideTabMenuTabs, setSideTabMenuTabs] = useState<MenuTab[]>([]);
+  const [activeSideTab, setActiveSideTab] = useState<string>("");
+
   const handleMenuClick = (content: string): void => {
     setSideTabContent(content);
     setShowSideTab(true);
+
+    // Create or update side tab for the menu item
+    const menuItems = [
+      { name: "About Me", content: "About" },
+      { name: "Skills", content: "Skills" },
+      { name: "Projects", content: "Projects" },
+      { name: "Contact", content: "Contact" },
+    ];
+
+    const menuItem = menuItems.find((item) => item.content === content);
+    if (menuItem) {
+      const tabId = content.toLowerCase();
+      const newSideTab: MenuTab = {
+        id: tabId,
+        name: menuItem.name,
+        content: menuItem.content,
+      };
+
+      // Add tab if it doesn't exist
+      setSideTabMenuTabs((prev) => {
+        const exists = prev.find((tab) => tab.id === tabId);
+        if (!exists) {
+          return [...prev, newSideTab];
+        }
+        return prev;
+      });
+
+      // Set as active tab
+      setActiveSideTab(tabId);
+    }
   };
 
   const handleCloseSideTab = (): void => {
     setShowSideTab(false);
+    // Optionally clear side tabs when closing
+    // setSideTabMenuTabs([]);
+    // setActiveSideTab("");
+  };
+
+  // Side tab management functions
+  const handleSideTabClick = (tabId: string) => {
+    setActiveSideTab(tabId);
+    const tab = sideTabMenuTabs.find((t) => t.id === tabId);
+    if (tab) {
+      setSideTabContent(tab.content);
+    }
+  };
+
+  const handleSideTabClose = (tabId: string) => {
+    if (sideTabMenuTabs.length === 1) {
+      // If only one tab, close the entire side panel
+      setShowSideTab(false);
+      setSideTabMenuTabs([]);
+      setActiveSideTab("");
+      return;
+    }
+
+    const newTabs = sideTabMenuTabs.filter((tab) => tab.id !== tabId);
+    setSideTabMenuTabs(newTabs);
+
+    if (activeSideTab === tabId) {
+      const newActiveTab = newTabs[newTabs.length - 1];
+      setActiveSideTab(newActiveTab.id);
+      setSideTabContent(newActiveTab.content);
+    }
   };
 
   // Tab management functions
@@ -59,6 +129,11 @@ export default function Home() {
     }
 
     setActiveTab(tabId);
+
+    // 🔑 Close SideTab only on mobile
+    if (window.innerWidth < 768) {
+      setShowSideTab(false);
+    }
   };
 
   const handleTabClick = (tabId: string) => {
@@ -77,73 +152,13 @@ export default function Home() {
   };
 
   const getProjectDetails = (projectName: string) => {
-    const projects = [
-      { name: "Arthur G", platform: "WooCommerce", tech: "Next.js + PHP" },
-      {
-        name: "Assembly Talent",
-        platform: "WordPress + JobAdder",
-        tech: "Next.js + PHP",
-      },
-      {
-        name: "Black Fridye",
-        platform: "Shopify",
-        tech: "HTML/SCSS/JS + Liquid",
-      },
-      {
-        name: "Bloomingdales",
-        platform: "WooCommerce + MYOB",
-        tech: "React + PHP",
-      },
-      { name: "Junglefy", platform: "Craft", tech: "Next.js" },
-    ];
+    const projects = [{ name: "", platform: "", tech: "" }];
 
     return projects.find((p) => p.name === projectName);
   };
 
   const generateProjectContent = (projectName: string, details: any) => {
-    return `// ${projectName} - Project Details
-// ================================
-
-const project = {
-  name: "${projectName}",
-  platform: "${details?.platform || "N/A"}",
-  technologies: "${details?.tech || "N/A"}",
-  status: "Completed",
-  
-  description: \`
-    ${projectName} is a modern web application built with cutting-edge 
-    technologies and best practices. This project showcases advanced 
-    development techniques and user experience design.
-  \`,
-  
-  features: [
-    "Responsive Design",
-    "Performance Optimized", 
-    "Modern UI/UX",
-    "Cross-browser Compatible",
-    "SEO Optimized"
-  ],
-  
-  technical_highlights: {
-    frontend: "${details?.tech?.split(" + ")[0] || "Modern Framework"}",
-    backend: "${details?.tech?.split(" + ")[1] || "Server Technology"}",
-    platform: "${details?.platform || "Custom Platform"}"
-  },
-  
-  deployment: {
-    status: "Live",
-    environment: "Production",
-    last_updated: new Date().toISOString().split('T')[0]
-  }
-};
-
-// Project initialization
-console.log(\`🚀 Loading \${project.name}...\`);
-console.log(\`📋 Platform: \${project.platform}\`);
-console.log(\`⚡ Tech Stack: \${project.technologies}\`);
-console.log(\`✅ Status: \${project.status}\`);
-
-`;
+    return `// ${projectName} - Project Details`;
   };
 
   return (
@@ -151,7 +166,7 @@ console.log(\`✅ Status: \${project.status}\`);
       {/* Desktop & larger: side by side */}
       <div className="hidden md:flex w-full flex-col">
         <div className="flex flex-row">
-          {/* Left side - SideNavbar + Terminal section */}
+          {/* Left side - Terminal section */}
           <div className="flex flex-col flex-1">
             <Navbar
               tabs={tabs}
@@ -170,8 +185,14 @@ console.log(\`✅ Status: \${project.status}\`);
 
           {/* Right side - SideTab with its own navbar */}
           {showSideTab && (
-            <div className="flex flex-col w-full md:w-[50%] lg:w-[45%] xl:w-[40%]">
-              <SideTabNavbar onClose={handleCloseSideTab} />
+            <div className="flex flex-col w-full md:w-[50%] lg:w-[45%] xl:w-[50%] bg-gray-900">
+              <SideTabNavbar
+                onClose={handleCloseSideTab}
+                menuTabs={sideTabMenuTabs}
+                activeTab={activeSideTab}
+                onTabClick={handleSideTabClick}
+                onTabClose={handleSideTabClose}
+              />
               <SideTab
                 content={sideTabContent}
                 onProjectClick={handleProjectClick}
@@ -192,7 +213,13 @@ console.log(\`✅ Status: \${project.status}\`);
             onTabClose={handleTabClose}
           />
         ) : (
-          <SideTabNavbar onClose={handleCloseSideTab} />
+          <SideTabNavbar
+            onClose={handleCloseSideTab}
+            menuTabs={sideTabMenuTabs}
+            activeTab={activeSideTab}
+            onTabClick={handleSideTabClick}
+            onTabClose={handleSideTabClose}
+          />
         )}
 
         <div className="flex flex-1 flex-row">
