@@ -8,7 +8,6 @@ import SideTabNavbar from "@/components/Navbars/SideTabNavbar";
 interface Tab {
   id: string;
   name: string;
-  content: string;
   type: "default" | "project";
 }
 
@@ -20,7 +19,7 @@ interface MenuTab {
 
 export default function Home() {
   const [showSideTab, setShowSideTab] = useState<boolean>(false);
-  const [sideTabContent, setSideTabContent] = useState<string>("Projects");
+  const [sideTabContent, setSideTabContent] = useState<string>("");
 
   // Tab management state
   const [activeTab, setActiveTab] = useState("K_folio.js");
@@ -28,7 +27,6 @@ export default function Home() {
     {
       id: "K_folio.js",
       name: "K_folio.js",
-      content: "",
       type: "default",
     },
   ]);
@@ -115,13 +113,9 @@ export default function Home() {
     const existingTab = tabs.find((tab) => tab.id === tabId);
 
     if (!existingTab) {
-      // Get project details
-      const projectDetails = getProjectDetails(projectName);
-
       const newTab: Tab = {
         id: tabId,
         name: tabId,
-        content: generateProjectContent(projectName, projectDetails),
         type: "project",
       };
 
@@ -155,10 +149,6 @@ export default function Home() {
     const projects = [{ name: "", platform: "", tech: "" }];
 
     return projects.find((p) => p.name === projectName);
-  };
-
-  const generateProjectContent = (projectName: string, details: any) => {
-    return `// ${projectName} - Project Details`;
   };
 
   return (

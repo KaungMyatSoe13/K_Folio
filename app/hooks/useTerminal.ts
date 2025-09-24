@@ -12,7 +12,6 @@ export const useTerminal = () => {
   const [output, setOutput] = useState<string[]>([]);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [animationDone, setAnimationDone] = useState<boolean>(false);
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Typewriter effect
   useEffect(() => {
@@ -31,8 +30,7 @@ export const useTerminal = () => {
 
   // Focus input when animation is done
   useEffect(() => {
-    if (animationDone && inputRef.current) {
-      inputRef.current.focus();
+    if (animationDone) {
       setShowMenu(true);
     }
   }, [animationDone]);
@@ -73,7 +71,6 @@ export const useTerminal = () => {
     output,
     showMenu,
     animationDone,
-    inputRef,
     handleInputChange,
     handleInputSubmit,
   };

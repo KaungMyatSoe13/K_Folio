@@ -19,7 +19,6 @@ const MyanglishTranslator = lazy(
 interface Tab {
   id: string;
   name: string;
-  content: string;
   type: "default" | "project";
 }
 
@@ -27,7 +26,7 @@ interface TerminalProps {
   onMenuClick: (content: string) => void;
   tabs: Tab[];
   activeTab: string;
-  onProjectClick?: (projectName: string, projectContent: string) => void;
+  onProjectClick?: (projectName: string) => void;
 }
 
 // Loading component for Suspense
@@ -52,7 +51,6 @@ export default function Terminal({
     output,
     showMenu,
     animationDone,
-    inputRef,
     handleInputChange,
     handleInputSubmit,
   } = useTerminal();
@@ -92,6 +90,10 @@ export default function Terminal({
 
       case "ijudge":
         return <IJudge />;
+
+      case "k_folio":
+        return <div>K_folio Project</div>;
+
       // Add more cases for your projects
       default:
         return (
@@ -117,7 +119,7 @@ export default function Terminal({
     // On mobile, redirect to SideTab instead of showing content here
     if (isMobile && onProjectClick) {
       // Trigger the SideTab to show this project
-      onProjectClick(currentTab.name, currentTab.content);
+      onProjectClick(currentTab.name);
       return null; // Don't render anything here
     }
 
@@ -171,7 +173,6 @@ export default function Terminal({
             >
               <span>K@Portfolio$ </span>
               <input
-                ref={inputRef}
                 type="text"
                 value={userInput}
                 onChange={handleInputChange}
@@ -183,15 +184,6 @@ export default function Terminal({
           </pre>
         )}
       </div>
-
-      {!animationDone && (
-        <pre
-          className="!m-0 !p-0 whitespace-pre-wrap pl-4"
-          style={{ lineHeight: "20px", margin: 0, padding: 0 }}
-        >
-          <span className="blinking-cursor">|</span>
-        </pre>
-      )}
     </div>
   );
 }

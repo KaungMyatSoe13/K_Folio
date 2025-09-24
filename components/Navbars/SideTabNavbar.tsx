@@ -85,6 +85,11 @@ const SideTabNavbar = ({
     setShowOverflow(false);
   };
 
+  const handleOverflowClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowOverflow(!showOverflow);
+  };
+
   const closeTab = (tabId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     onTabClose(tabId);
@@ -105,7 +110,7 @@ const SideTabNavbar = ({
         {/* File tabs */}
         <div
           ref={tabsContainerRef}
-          className="flex items-center overflow-hidden relative flex-1"
+          className="flex items-center overflow-visible relative flex-1"
         >
           {/* Visible tabs */}
           {visibleTabs.map((tab) => (
@@ -145,7 +150,7 @@ const SideTabNavbar = ({
           {hasOverflow && (
             <div className="relative" ref={dropdownRef}>
               <button
-                onClick={() => setShowOverflow(!showOverflow)}
+                onClick={handleOverflowClick}
                 className="flex items-center justify-center h-6.5 px-2 bg-[#323232] text-[#eaeaea] hover:bg-[#3a3a3a] transition-colors duration-150 border-l border-gray-600"
                 title={`${overflowTabs.length} more menu tabs`}
               >
