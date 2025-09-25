@@ -72,9 +72,6 @@ export default function Home() {
 
   const handleCloseSideTab = (): void => {
     setShowSideTab(false);
-    // Optionally clear side tabs when closing
-    // setSideTabMenuTabs([]);
-    // setActiveSideTab("");
   };
 
   // Side tab management functions
@@ -155,16 +152,17 @@ export default function Home() {
     <main className="max-h-screen flex">
       {/* Desktop & larger: side by side */}
       <div className="hidden md:flex w-full flex-col">
-        <div className="flex flex-row">
+        <div className="flex flex-row h-screen">
           {/* Left side - Terminal section */}
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 h-full overflow-y-auto">
             <Navbar
               tabs={tabs}
               activeTab={activeTab}
               onTabClick={handleTabClick}
               onTabClose={handleTabClose}
             />
-            <div className="flex flex-1 flex-row">
+
+            <div className="flex-1 flex flex-row">
               <Terminal
                 onMenuClick={handleMenuClick}
                 tabs={tabs}
@@ -175,7 +173,11 @@ export default function Home() {
 
           {/* Right side - SideTab with its own navbar */}
           {showSideTab && (
-            <div className="flex flex-col w-full md:w-[50%] lg:w-[45%] xl:w-[50%] bg-gray-900">
+            <div
+              className={`flex flex-col h-full w-full overflow-y-hidden md:w-[50%] lg:w-[45%] ${
+                sideTabContent === "Projects" ? "xl:w-[40%]" : "xl:w-[30%]"
+              } bg-gray-900`}
+            >
               <SideTabNavbar
                 onClose={handleCloseSideTab}
                 menuTabs={sideTabMenuTabs}
@@ -183,6 +185,7 @@ export default function Home() {
                 onTabClick={handleSideTabClick}
                 onTabClose={handleSideTabClose}
               />
+
               <SideTab
                 content={sideTabContent}
                 onProjectClick={handleProjectClick}

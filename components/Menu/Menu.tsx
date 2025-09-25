@@ -29,7 +29,7 @@ export default function Menu({ onMenuClick }: MenuProps) {
   };
 
   return (
-    <div className="text-[#eaeaea] bg-[#282828] p-2 sm:p-4 rounded-lg w-full max-w-sm mx-auto text-xs sm:text-sm">
+    <div className="text-[#eaeaea]  p-2 sm:p-4 rounded-lg w-full max-w-sm mx-auto text-xs sm:text-sm bg-transparent">
       <div className="whitespace-pre text-center select-none">
         {/* Top border */}
         <div className="text-gray-500">{createBorder()}</div>

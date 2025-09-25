@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Sun, Moon, X, Minimize2, Square, ChevronRight } from "lucide-react";
+import { X, ChevronRight } from "lucide-react";
 
 interface MenuTab {
   id: string;
@@ -126,7 +126,7 @@ const SideTabNavbar = ({
               {/* Tab content */}
               <div className="h-6.5 pr-2 justify-center items-center flex flex-1">
                 <span className="truncate w-full h-full flex items-center justify-center text-center ">
-                  {tab.name}
+                  {tab.name}.js
                 </span>
 
                 {/* Close button */}
@@ -199,28 +199,8 @@ const SideTabNavbar = ({
 
         {/* Right side controls */}
         <div className="flex items-center space-x-1 px-2 flex-shrink-0">
-          {/* Theme toggle icon only */}
-          <button
-            className="p-1.5 rounded hover:bg-gray-600 text-[#eaeaea] transition-colors duration-150"
-            title="Theme toggle"
-          >
-            <Sun size={16} />
-          </button>
-
           {/* Window controls */}
           <div className="flex items-center space-x-1 ml-2">
-            <button
-              className="p-1 rounded hover:bg-gray-600 text-[#eaeaea] transition-colors duration-150"
-              title="Minimize"
-            >
-              <Minimize2 size={12} />
-            </button>
-            <button
-              className="p-1 rounded hover:bg-gray-600 text-[#eaeaea] transition-colors duration-150"
-              title="Maximize"
-            >
-              <Square size={12} />
-            </button>
             <button
               className="p-1 rounded hover:bg-red-500 hover:text-white text-[#eaeaea] transition-colors duration-150"
               title="Close"

@@ -2,6 +2,7 @@
 import { VT323 } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
 import { Press_Start_2P } from "next/font/google";
+import localFont from "next/font/local";
 
 export const pressStart2P = Press_Start_2P({
   subsets: ["latin"],
@@ -19,4 +20,11 @@ export const shareTechMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-share-tech-mono",
+});
+
+export const benzinSemibold = localFont({
+  src: "./benzin-semibold.ttf", // your TTF file
+  weight: "600", // semibold
+  style: "normal",
+  variable: "--font-benzin-semibold",
 });

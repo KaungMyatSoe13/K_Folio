@@ -1,130 +1,39 @@
 import React from "react";
-import Image from "next/image";
 import { vt323 } from "../fonts/fonts";
+import AsciiVerticalLine from "@/components/ui/AsciiVerticalLine";
+import AsciiLine from "@/components/ui/AsciiLine";
+import { benzinSemibold } from "../fonts/fonts";
+import AsciiGridBackground from "../../components/ui/AsciiGridBackground";
 
 export default function Peakfit() {
+  const columns = 6;
+
   return (
-    <div className={`${vt323.className} space-y-8`}>
-      {/* Custom Header for PeakFit */}
-      <div className="bg-gradient-to-r from-green-900 to-teal-900 p-6 rounded-lg border border-green-400">
-        <h1 className="text-4xl text-green-400 mb-2">PeakFit</h1>
-        <p className="text-gray-300">Fitness Tracking & Workout Planning App</p>
-      </div>
-
-      {/* Custom layout for PeakFit */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 space-y-6">
-          {/* Hero Section */}
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-            <h2 className="text-2xl text-white mb-4">Project Overview</h2>
-            <p className="text-gray-300 mb-4">
-              PeakFit is a comprehensive fitness tracking application that helps
-              users monitor their workouts, track progress, and achieve their
-              fitness goals. Built with modern mobile-first design principles.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-green-600 text-white px-3 py-1 rounded text-sm">
-                React Native
-              </span>
-              <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                Firebase
-              </span>
-              <span className="bg-yellow-600 text-white px-3 py-1 rounded text-sm">
-                JavaScript
-              </span>
-            </div>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-green-400 mb-2">
-                💪 Workout Tracking
-              </h3>
-              <p className="text-gray-300 text-sm">
-                Log exercises, sets, reps, and weights
-              </p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-green-400 mb-2">
-                📊 Progress Analytics
-              </h3>
-              <p className="text-gray-300 text-sm">
-                Visual progress charts and insights
-              </p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-green-400 mb-2">
-                🏃 Activity Monitoring
-              </h3>
-              <p className="text-gray-300 text-sm">
-                Track cardio, steps, and calories
-              </p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-green-400 mb-2">🎯 Goal Setting</h3>
-              <p className="text-gray-300 text-sm">
-                Set and achieve fitness milestones
-              </p>
-            </div>
-          </div>
+    <div
+      className={`${vt323.className} flex flex-row justify-center sm:justify-start h-full w-full`}
+    >
+      <AsciiVerticalLine />
+      <div className="flex flex-col w-full relative">
+        <AsciiLine char="-" />
+        <div className="flex flex-row">
+          <h1 className="text-7xl text-gray-400">PeakFit</h1>
         </div>
+        <AsciiLine char="-" />
 
-        {/* Sidebar */}
-        <div className="space-y-6">
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-            <h3 className="text-xl text-white mb-4">App Stats</h3>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-400">Screens:</span>
-                <span className="text-green-400">20+</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Components:</span>
-                <span className="text-green-400">35+</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Features:</span>
-                <span className="text-green-400">12</span>
-              </div>
-            </div>
+        {/* Content container with relative positioning and full height */}
+        <div className="relative w-full h-full flex-1">
+          {/* Background positioned absolutely behind content */}
+          <div className="absolute inset-0 z-0">
+            <AsciiGridBackground columns={columns} className="opacity-50" />
           </div>
 
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-            <h3 className="text-xl text-white mb-4">Links</h3>
-            <div className="space-y-2">
-              <a href="#" className="block text-green-400 hover:underline">
-                App Store →
-              </a>
-              <a href="#" className="block text-green-400 hover:underline">
-                Play Store →
-              </a>
-              <a href="#" className="block text-green-400 hover:underline">
-                GitHub →
-              </a>
+          {/* Content with higher z-index */}
+          <div className="relative z-10 p-4 h-full">
+            <div className="text-gray-400 text-lg">Your content goes here</div>
+            <div className="text-gray-300 text-sm mt-2">
+              This content appears over the ASCII grid background
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Screenshot Gallery */}
-      <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-        <h2 className="text-2xl text-white mb-4">App Screenshots</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Image
-            src="/test.png"
-            alt="PeakFit Dashboard"
-            width={400}
-            height={300}
-            className="rounded-lg border border-gray-600"
-          />
-          <Image
-            src="/test.png"
-            alt="PeakFit Workout Tracker"
-            width={400}
-            height={300}
-            className="rounded-lg border border-gray-600"
-          />
         </div>
       </div>
     </div>

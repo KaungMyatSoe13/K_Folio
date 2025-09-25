@@ -4,6 +4,7 @@ import { useTerminal } from "../../app/hooks/useTerminal";
 import Menu from "../Menu/Menu";
 import SideNavbar from "../Navbars/SideNavbar";
 import { vt323 } from "../../app/fonts/fonts";
+import { benzinSemibold } from "../../app/fonts/fonts";
 
 // Import working components directly
 import ShopShop from "../../app/projects/ShopShop";
@@ -125,14 +126,19 @@ export default function Terminal({
 
     // On desktop, show the project content directly
     return (
-      <div className="flex flex-1 border-r border-t border-b border-gray-600 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex flex-row">
+      <div className="flex flex-1 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex-row">
         <SideNavbar />
 
         <div
-          className="h-full overflow-y-auto flex-1 flex flex-row"
+          className="h-full overflow-hidden flex-1 flex flex-row relative"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {renderProjectComponent(currentTab.name)}
+          <p
+            className={`absolute right-[-650] top-1/2 -translate-y-1/2 -translate-x-1/2 -rotate-90 scale-y-[1.4] inline-block h-fit leading-none text-[20vh] text-white/10 pointer-events-none select-none ${benzinSemibold.className}`}
+          >
+            PeakFit
+          </p>
         </div>
       </div>
     );
@@ -140,9 +146,9 @@ export default function Terminal({
 
   // Default terminal view for K_folio.js tab
   return (
-    <div className="flex-1 border-r border-t border-b border-gray-600 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex flex-row">
+    <div className="flex-1 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex flex-row">
       <SideNavbar />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 relative z-10  overflow-hidden">
         <pre
           className={`!m-0 !p-0 whitespace-pre-wrap ml-4 text-md sm:text-lg lg:text-xl ${vt323.className}`}
           style={{ lineHeight: "20px", margin: 0, padding: 0 }}
@@ -177,12 +183,20 @@ export default function Terminal({
                 value={userInput}
                 onChange={handleInputChange}
                 onKeyDown={handleInputSubmit}
-                className="bg-transparent border-none outline-none text-[#eaeaea] w-auto min-w-[50px]"
+                className="bg-transparent outline-none text-[#eaeaea] w-auto min-w-[50px]"
                 autoFocus={animationDone}
               />
             </span>
           </pre>
         )}
+
+        <p
+          className={`absolute right-35 top-1/2 -translate-y-1/2 translate-x-1/2 -rotate-90 scale-y-[1.4]
+     inline-block w-fit h-fit leading-none 
+     text-[30vh] text-white/10 pointer-events-none select-none ${benzinSemibold.className}`}
+        >
+          Kfolio
+        </p>
       </div>
     </div>
   );

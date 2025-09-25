@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutSection: React.FC = () => {
   return (
-    <div className="bg-[#101828] text-blue-400 font-mono text-sm    max-w-4xl mx-auto">
+    <div className="bg-[#101828] text-blue-400 font-mono text-sm max-w-4xl mx-auto">
       {/* HTML-style comments and tags */}
       <div className="text-gray-500 ">{"<!-- start .scope-profile -->"}</div>
 
