@@ -13,9 +13,17 @@ export default function AsciiGridBackground({
 }: AsciiGridBackgroundProps) {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const [verticalCharsCount, setVerticalCharsCount] = React.useState(100);
+  const [isClient, setIsClient] = React.useState(false);
 
-  // Calculate vertical characters needed based on container height
+  // Ensure we're on the client side before rendering random content
   React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Calculate vertical characters needed based on container height - run only once
+  React.useEffect(() => {
+    if (!isClient) return;
+
     const updateVerticalChars = () => {
       if (contentRef.current) {
         const containerHeight = contentRef.current.offsetHeight;
@@ -26,28 +34,20 @@ export default function AsciiGridBackground({
       }
     };
 
+    // Only run once when component mounts
     updateVerticalChars();
 
-    // Update on window resize
-    window.addEventListener("resize", updateVerticalChars);
-
-    // Use ResizeObserver if available for more accurate tracking
-    let resizeObserver: ResizeObserver | null = null;
-    if (contentRef.current && window.ResizeObserver) {
-      resizeObserver = new ResizeObserver(updateVerticalChars);
-      resizeObserver.observe(contentRef.current);
-    }
+    // Optional: Update on window resize (you can remove this if you want it completely static)
+    const handleResize = () => updateVerticalChars();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", updateVerticalChars);
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
+      window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [isClient]);
 
-  // Generate random horizontal lines for each column
-  const generateHorizontalLines = (columnIndex: number) => {
+  // Generate random horizontal lines for each column - ONLY ONCE
+  const generateHorizontalLines = React.useCallback((columnIndex: number) => {
     const chars = ["+", "-", "*", "="];
     const lines = [];
     let currentPosition = 0;
@@ -60,21 +60,51 @@ export default function AsciiGridBackground({
       lines.push({
         char,
         position: currentPosition,
-        id: `${columnIndex}-${Math.random()}`,
+        id: `${columnIndex}-${currentPosition}-${char}`,
       });
 
       currentPosition += spacing;
     }
 
     return lines;
-  };
+  }, []); // Empty dependency array - this callback never changes
 
-  // Generate lines for all columns
-  const [allColumnLines] = React.useState(() =>
-    Array.from({ length: columns }, (_, index) =>
+  // Generate lines for all columns - ONLY ONCE when component mounts
+  const allColumnLines = React.useMemo(() => {
+    if (!isClient) return [];
+
+    // Generate once and cache forever
+    return Array.from({ length: columns }, (_, index) =>
       generateHorizontalLines(index)
-    )
-  );
+    );
+  }, [isClient, columns, generateHorizontalLines]); // Only regenerate if columns change
+
+  // Show placeholder during SSR
+  if (!isClient) {
+    return (
+      <div
+        ref={contentRef}
+        className={`w-full h-full relative ${className}`}
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${columns}, 1fr)`,
+          gap: "0",
+        }}
+      >
+        {Array.from({ length: columns }).map((_, index) => (
+          <div
+            key={index}
+            className="relative h-full border-r border-gray-800/30 last:border-r-0"
+          >
+            {/* Content area for each column */}
+            <div className="h-full relative z-10">
+              {children && React.Children.toArray(children)[index]}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -108,8 +138,8 @@ export default function AsciiGridBackground({
             </div>
           )}
 
-          {/* Horizontal ASCII lines for this column */}
-          {allColumnLines[index].map((line) => (
+          {/* Horizontal ASCII lines for this column - STATIC AFTER GENERATION */}
+          {allColumnLines[index]?.map((line) => (
             <div
               key={line.id}
               className="absolute left-0 right-0 text-gray-400/30 text-xs overflow-hidden pointer-events-none"
