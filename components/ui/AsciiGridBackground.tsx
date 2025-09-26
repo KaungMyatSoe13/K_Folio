@@ -12,6 +12,39 @@ export default function AsciiGridBackground({
   children,
 }: AsciiGridBackgroundProps) {
   const contentRef = React.useRef<HTMLDivElement>(null);
+  const [verticalCharsCount, setVerticalCharsCount] = React.useState(100);
+
+  // Calculate vertical characters needed based on container height
+  React.useEffect(() => {
+    const updateVerticalChars = () => {
+      if (contentRef.current) {
+        const containerHeight = contentRef.current.offsetHeight;
+        // Each character is approximately 12px tall (based on text-xs line-height)
+        const charHeight = 12;
+        const neededChars = Math.ceil(containerHeight / charHeight) + 5; // Add buffer
+        setVerticalCharsCount(neededChars);
+      }
+    };
+
+    updateVerticalChars();
+
+    // Update on window resize
+    window.addEventListener("resize", updateVerticalChars);
+
+    // Use ResizeObserver if available for more accurate tracking
+    let resizeObserver: ResizeObserver | null = null;
+    if (contentRef.current && window.ResizeObserver) {
+      resizeObserver = new ResizeObserver(updateVerticalChars);
+      resizeObserver.observe(contentRef.current);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateVerticalChars);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
 
   // Generate random horizontal lines for each column
   const generateHorizontalLines = (columnIndex: number) => {
@@ -67,7 +100,7 @@ export default function AsciiGridBackground({
                 transform: "translateX(1px)",
               }}
             >
-              {Array.from({ length: 100 }).map((_, i) => (
+              {Array.from({ length: verticalCharsCount }).map((_, i) => (
                 <span key={i} className="block leading-none">
                   |
                 </span>

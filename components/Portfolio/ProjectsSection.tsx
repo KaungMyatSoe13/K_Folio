@@ -4,6 +4,8 @@ import AsciiLine from "../ui/AsciiLine";
 import { projects } from "../data/projects";
 import { vt323 } from "../../app/fonts/fonts";
 import styles from "../PortfolioCSS/ProjectsSection.module.css";
+import { projectDetails } from "../data/projectDetails";
+import { Video } from "lucide-react";
 
 interface ProjectsSectionProps {
   onProjectClick?: (projectName: string) => void;
@@ -20,8 +22,18 @@ export default function ProjectsSection({
     }
   };
 
+  // Get the current project details based on hoveredProject
+  const getCurrentProject = () => {
+    if (!hoveredProject) return null;
+    // Convert project name to key format (e.g., "PeakFit" -> "peakfit")
+    const projectKey = hoveredProject.toLowerCase().replace(/\s+/g, "");
+    return projectDetails[projectKey as keyof typeof projectDetails] || null;
+  };
+
+  const currentProject = getCurrentProject();
+
   return (
-    <div className="max-h-screen  ">
+    <div className="max-h-screen">
       <div className="text-gray-400">
         <AsciiLine char="=" />
       </div>
@@ -76,25 +88,59 @@ export default function ProjectsSection({
           </div>
         ))}
 
-        {/* Preview Section */}
-        <div className="mt-4 min-h-[300px] border border-gray-600 bg-gray-800/50 p-4 relative overflow-hidden">
-          {hoveredProject ? (
-            <div className={`${styles.fadeIn} `}>
+        {/* Preview Section - Now Responsive */}
+        <div className="mt-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px] border border-gray-600 bg-gray-800/50 p-2 sm:p-4 relative overflow-hidden">
+          {hoveredProject && currentProject ? (
+            <div className={`${styles.fadeIn}`}>
               <div className="text-gray-400 text-xs mb-2 font-mono">
                 PREVIEW: {hoveredProject}
               </div>
-              <div className="relative w-full h-48 bg-gray-900 border border-gray-700 rounded overflow-hidden min-h-[250px]">
-                <Image
-                  src="/test.png"
-                  alt={`${hoveredProject} preview`}
-                  fill
-                  className="object-cover opacity-90 hover:opacity-100 transition-opacity"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+
+              <div className="flex justify-center w-full">
+                <div className="relative w-full max-w-4xl">
+                  {/* Responsive container that maintains aspect ratio */}
+                  <div
+                    className="relative w-full rounded-lg overflow-hidden shadow-lg bg-gray-900 border border-gray-700"
+                    style={{
+                      aspectRatio: "16/9", // More standard aspect ratio
+                      maxHeight: "60vh", // Prevent it from being too tall
+                    }}
+                  >
+                    {/* Media Container */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      {currentProject.video && currentProject.video[0] ? (
+                        <video
+                          src={currentProject.video[0]}
+                          autoPlay
+                          muted
+                          playsInline
+                          loop
+                          controls={false}
+                          className="w-full h-full object-contain"
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : currentProject.images && currentProject.images[0] ? (
+                        <Image
+                          src={currentProject.images[0]}
+                          alt={`${hoveredProject} preview`}
+                          fill
+                          className="object-contain opacity-90 hover:opacity-100 transition-opacity"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-gray-500">
+                          <Video className="w-8 h-8 mr-2" />
+                          No media available
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-center h-full text-gray-500 text-sm font-mono">
+            <div className="flex items-center justify-center h-full text-gray-500 text-xs sm:text-sm font-mono text-center px-4">
               Hover over a project to see preview • Click to open in terminal
             </div>
           )}
@@ -127,6 +173,48 @@ export default function ProjectsSection({
             </div>
           </div>
         ))}
+
+        {/* Mobile Preview Section */}
+        {hoveredProject && currentProject && (
+          <div className="mt-4 border border-gray-600 bg-gray-800/50 p-3">
+            <div className="text-gray-400 text-xs mb-2 font-mono">
+              PREVIEW: {hoveredProject}
+            </div>
+            <div
+              className="relative w-full rounded-lg overflow-hidden bg-gray-900 border border-gray-700"
+              style={{ aspectRatio: "16/9" }}
+            >
+              <div className="absolute inset-0 flex items-center justify-center">
+                {currentProject.video && currentProject.video[0] ? (
+                  <video
+                    src={currentProject.video[0]}
+                    autoPlay
+                    muted
+                    playsInline
+                    loop
+                    controls={false}
+                    className="w-full h-full object-contain"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                ) : currentProject.images && currentProject.images[0] ? (
+                  <Image
+                    src={currentProject.images[0]}
+                    alt={`${hoveredProject} preview`}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-500">
+                    <Video className="w-6 h-6 mr-2" />
+                    No media available
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -25,9 +25,4 @@ export const projects: Project[] = [
     platform: "AI/ML",
     tech: "TensorFlow + PyTorch + VGG",
   },
-  {
-    name: "iJudge",
-    platform: "Web App",
-    tech: "DistilBERT + Flask",
-  },
 ];

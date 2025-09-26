@@ -3,6 +3,7 @@ import React, { Suspense, lazy } from "react";
 import { useTerminal } from "../../app/hooks/useTerminal";
 import Menu from "../Menu/Menu";
 import SideNavbar from "../Navbars/SideNavbar";
+import AsciiGridBackground from "../ui/AsciiGridBackground";
 import { vt323 } from "../../app/fonts/fonts";
 import { benzinSemibold } from "../../app/fonts/fonts";
 
@@ -127,7 +128,9 @@ export default function Terminal({
     // On desktop, show the project content directly
     return (
       <div className="flex flex-1 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex-row">
-        <SideNavbar />
+        <div className="hidden md:block">
+          <SideNavbar />
+        </div>
 
         <div
           className="h-full overflow-hidden flex-1 flex flex-row relative"
@@ -135,7 +138,7 @@ export default function Terminal({
         >
           {renderProjectComponent(currentTab.name)}
           <p
-            className={`absolute right-[-650] top-1/2 -translate-y-1/2 -translate-x-1/2 -rotate-90 scale-y-[1.4] inline-block h-fit leading-none text-[20vh] text-white/10 pointer-events-none select-none ${benzinSemibold.className}`}
+            className={`absolute right-[-650] top-75 -translate-x-1/2 -rotate-90 scale-y-[1.4] inline-block h-fit leading-none text-[20vh] text-white/10 pointer-events-none select-none ${benzinSemibold.className}`}
           >
             PeakFit
           </p>
@@ -144,56 +147,66 @@ export default function Terminal({
     );
   }
 
-  // Default terminal view for K_folio.js tab
+  // Default terminal view for K_folio.js tab with ASCII Grid Background
   return (
     <div className="flex-1 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex flex-row">
       <SideNavbar />
-      <div className="flex flex-col flex-1 relative z-10  overflow-hidden">
-        <pre
-          className={`!m-0 !p-0 whitespace-pre-wrap ml-4 text-md sm:text-lg lg:text-xl ${vt323.className}`}
-          style={{ lineHeight: "20px", margin: 0, padding: 0 }}
-        >
-          {displayedText}
-        </pre>
 
-        {/* Show menu after initial text */}
-        {showMenu && <Menu onMenuClick={onMenuClick} />}
+      <div className="flex flex-col flex-1 relative overflow-hidden">
+        {/* ASCII Grid Background */}
+        <div className="absolute inset-0 z-0">
+          <AsciiGridBackground columns={6} className="opacity-30" />
+        </div>
 
-        {/* Show command history/output after menu, just above the current input */}
-        {output.length > 0 && (
+        {/* Terminal Content with higher z-index */}
+        <div className="relative z-10 flex flex-col flex-1">
           <pre
             className={`!m-0 !p-0 whitespace-pre-wrap ml-4 text-md sm:text-lg lg:text-xl ${vt323.className}`}
             style={{ lineHeight: "20px", margin: 0, padding: 0 }}
           >
-            {"\n" + output.join("\n")}
+            {displayedText}
           </pre>
-        )}
 
-        {animationDone && (
-          <pre
-            className="!m-0 !p-0 -wrap pl-4"
-            style={{ lineHeight: "20px", margin: 0, padding: 0 }}
-          >
-            <span
-              className={`inline-flex items-center text-md sm:text-lg lg:text-xl ${vt323.className} h-3 sm:h-5 mt-3 sm:mt-2`}
+          {/* Show menu after initial text */}
+          {showMenu && <Menu onMenuClick={onMenuClick} />}
+
+          {/* Show command history/output after menu, just above the current input */}
+          {output.length > 0 && (
+            <pre
+              className={`!m-0 !p-0 whitespace-pre-wrap ml-4 text-md sm:text-lg lg:text-xl ${vt323.className}`}
+              style={{ lineHeight: "20px", margin: 0, padding: 0 }}
             >
-              <span>K@Portfolio$ </span>
-              <input
-                type="text"
-                value={userInput}
-                onChange={handleInputChange}
-                onKeyDown={handleInputSubmit}
-                className="bg-transparent outline-none text-[#eaeaea] w-auto min-w-[50px]"
-                autoFocus={animationDone}
-              />
-            </span>
-          </pre>
-        )}
+              {"\n" + output.join("\n")}
+            </pre>
+          )}
 
+          {animationDone && (
+            <pre
+              className="!m-0 !p-0 -wrap pl-4"
+              style={{ lineHeight: "20px", margin: 0, padding: 0 }}
+            >
+              <span
+                className={`inline-flex items-center text-md sm:text-lg lg:text-xl ${vt323.className} h-3 sm:h-5 mt-3 sm:mt-2`}
+              >
+                <span>K@Portfolio$ </span>
+                <input
+                  type="text"
+                  value={userInput}
+                  onChange={handleInputChange}
+                  onKeyDown={handleInputSubmit}
+                  className="bg-transparent outline-none text-[#eaeaea] w-auto min-w-[50px]"
+                  autoFocus={animationDone}
+                />
+              </span>
+            </pre>
+          )}
+        </div>
+
+        {/* Watermark */}
         <p
-          className={`absolute right-35 top-1/2 -translate-y-1/2 translate-x-1/2 -rotate-90 scale-y-[1.4]
-     inline-block w-fit h-fit leading-none 
-     text-[30vh] text-white/10 pointer-events-none select-none ${benzinSemibold.className}`}
+          className={`absolute right-35 top-1/2 -translate-y-1/2 translate-x-1/2 -rotate-90 scale-y-[1.4] 
+           inline-block w-fit h-fit leading-none 
+           text-[30vh] text-white/10 pointer-events-none select-none z-20 ${benzinSemibold.className}`}
         >
           Kfolio
         </p>

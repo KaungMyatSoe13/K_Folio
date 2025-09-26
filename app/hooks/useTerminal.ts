@@ -24,7 +24,7 @@ export const useTerminal = () => {
         clearInterval(interval);
         setAnimationDone(true);
       }
-    }, 5);
+    }, 1);
     return () => clearInterval(interval);
   }, []);
 
