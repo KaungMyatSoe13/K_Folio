@@ -20,6 +20,7 @@ interface MenuTab {
 export default function Home() {
   const [showSideTab, setShowSideTab] = useState<boolean>(false);
   const [sideTabContent, setSideTabContent] = useState<string>("");
+  const [isProjectActive, setIsProjectActive] = useState<boolean>(false); // New state
 
   // Tab management state
   const [activeTab, setActiveTab] = useState("K_folio.js");
@@ -74,6 +75,12 @@ export default function Home() {
     setShowSideTab(false);
   };
 
+  // New function to show SideTab back
+  const handleShowSideTab = (): void => {
+    setIsProjectActive(false);
+    setShowSideTab(true);
+  };
+
   // Side tab management functions
   const handleSideTabClick = (tabId: string) => {
     setActiveSideTab(tabId);
@@ -120,8 +127,10 @@ export default function Home() {
     }
 
     setActiveTab(tabId);
+    setIsProjectActive(true); // Set project as active
+    setShowSideTab(false); // Hide SideTab when project is clicked
 
-    // 🔑 Close SideTab only on mobile
+    // Close SideTab on mobile (keeping your existing logic)
     if (window.innerWidth < 768) {
       setShowSideTab(false);
     }
@@ -129,6 +138,15 @@ export default function Home() {
 
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
+
+    // Check if clicked tab is a project tab
+    const clickedTab = tabs.find((tab) => tab.id === tabId);
+    if (clickedTab?.type === "project") {
+      setIsProjectActive(true);
+      setShowSideTab(false);
+    } else {
+      setIsProjectActive(false);
+    }
   };
 
   const handleTabClose = (tabId: string) => {
@@ -138,7 +156,16 @@ export default function Home() {
     setTabs(newTabs);
 
     if (activeTab === tabId) {
-      setActiveTab(newTabs[newTabs.length - 1].id);
+      const newActiveTab = newTabs[newTabs.length - 1];
+      setActiveTab(newActiveTab.id);
+
+      // Check if the new active tab is a project
+      if (newActiveTab.type === "project") {
+        setIsProjectActive(true);
+        setShowSideTab(false);
+      } else {
+        setIsProjectActive(false);
+      }
     }
   };
 
@@ -171,8 +198,31 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Show SideTab button when project is active */}
+          {isProjectActive && (
+            <button
+              onClick={handleShowSideTab}
+              className="fixed top-1/2 right-0 -translate-y-1/2 z-50 hover:bg-gray-700 bg-gray-600 text-white p-3 rounded-l-lg shadow-lg transition-colors "
+              title="Show Menu"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          )}
+
           {/* Right side - SideTab with its own navbar */}
-          {showSideTab && (
+          {showSideTab && !isProjectActive && (
             <div
               className={`flex flex-col h-full w-full overflow-y-hidden md:w-[50%] lg:w-[45%] ${
                 sideTabContent === "Projects" ? "xl:w-[40%]" : "xl:w-[30%]"
@@ -213,6 +263,29 @@ export default function Home() {
             onTabClick={handleSideTabClick}
             onTabClose={handleSideTabClose}
           />
+        )}
+
+        {/* Show SideTab button on mobile when project is active */}
+        {isProjectActive && (
+          <button
+            onClick={handleShowSideTab}
+            className="hidden sm:fixed top-4 right-4 z-50 bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg shadow-lg transition-colors border-2 border-cyan-400"
+            title="Show Menu"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
         )}
 
         <div className="flex flex-1 flex-row">

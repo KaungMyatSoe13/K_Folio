@@ -50,18 +50,20 @@ export default function Peakfit() {
                             rounded-lg  
                             overflow-hidden  
                             shadow-lg  
-                            w-full
-                            h-[25vh]
+                            max-h-[100vh]
                             max-w-[70vw]
-                            sm:max-w-[65vw] 
-                            md:max-w-xl  
-                            lg:max-w-3xl
-                            sm:h-[30vh]
-                            md:h-[40vh]
-                            lg:h-[50vh]
-                            bg-transparent
-                             sm:bg-transparent md:bg-green-900 lg:bg-red-900 
+                            sm:max-w-[85vw] 
+                            md:max-w-2xl  
+                            lg:max-w-4xl
+                            sm:h-[50vh]
+                            md:h-[60vh]
+                            lg:h-[70vh]
 
+                            bg-yellow-500      
+                            sm:bg-red-500 
+                            md:bg-green-500
+                            lg:bg-blue-500
+                                           
                           "
                   style={{ aspectRatio: "1900/962" }}
                 >
@@ -74,7 +76,7 @@ export default function Peakfit() {
                         muted
                         playsInline
                         controls={false}
-                        className="w-full h-full object-contain rounded-xl"
+                        className="w-full h-full object-contain rounded-2xl"
                         style={{ maxHeight: "100%" }}
                       >
                         Your browser does not support the video tag.
@@ -98,6 +100,10 @@ export default function Peakfit() {
                     <p className="text-gray-400 text-md sm:text-lg">
                       PLATFORM:{" "}
                       <span className="text-gray-200">{project.platform}</span>
+                    </p>
+                    <p className="text-gray-400 text-md sm:text-lg">
+                      ROLE:{" "}
+                      <span className="text-gray-200">{project.role}</span>
                     </p>
                     <p className="text-gray-400 text-md sm:text-lg">
                       Year:{" "}
@@ -210,17 +216,20 @@ export default function Peakfit() {
                             rounded-lg  
                             overflow-hidden  
                             shadow-lg  
-                            w-full
-                            max-w-[95vw]
-                            sm:max-w-[75vw] 
+                            max-h-[100vh]
+                            max-w-[70vw]
+                            sm:max-w-[85vw] 
                             md:max-w-2xl  
-                            lg:max-w-3xl
-                            h-[25vh]
-                            sm:h-[30vh]
-                            md:h-[40vh]
-                            lg:h-[50vh]
-                            bg-gray-900 
-                             sm:bg-blue-900 md:bg-green-900 lg:bg-red-900     
+                            lg:max-w-4xl
+                            sm:h-[50vh]
+                            md:h-[60vh]
+                            lg:h-[70vh]
+
+                            bg-yellow-500      
+                            sm:bg-red-500 
+                            md:bg-green-500
+                            lg:bg-blue-500
+                                   
                           "
                   style={{ aspectRatio: "1900/962" }}
                 >

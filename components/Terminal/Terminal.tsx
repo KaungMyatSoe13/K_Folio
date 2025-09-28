@@ -10,7 +10,7 @@ import { benzinSemibold } from "../../app/fonts/fonts";
 // Import working components directly
 import ShopShop from "../../app/projects/ShopShop";
 import PeakFit from "../../app/projects/Peakfit";
-import FaceRecognitionSystem from "../../app/projects/FaceRecognitionSystem";
+import EmoFace from "../../app/projects/EmoFace";
 import IJudge from "../../app/projects/iJudge";
 
 // Use dynamic import for MyanglishTranslator to avoid the import issue
@@ -175,7 +175,7 @@ export default function Terminal({
           <MyanglishTranslator />
         </Suspense>
       ),
-      face_recognition_system: <FaceRecognitionSystem />,
+      emoface: <EmoFace />,
       ijudge: <IJudge />,
       k_folio: <div>K_folio Project</div>,
     };
@@ -189,10 +189,6 @@ export default function Terminal({
           </div>
           <div className="text-gray-400 text-sm mt-2">
             Normalized name: {projectName}
-          </div>
-          <div className="mt-4 text-gray-400 text-sm">
-            Available projects: ShopShop, PeakFit, FaceRecognitionSystem,
-            MyanglishTranslator
           </div>
         </div>
       )

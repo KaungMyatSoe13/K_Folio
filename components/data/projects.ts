@@ -21,7 +21,7 @@ export const projects: Project[] = [
     tech: "React + Tailwind CSS",
   },
   {
-    name: "Face Recognition System",
+    name: "EmoFace",
     platform: "AI/ML",
     tech: "TensorFlow + PyTorch + VGG",
   },

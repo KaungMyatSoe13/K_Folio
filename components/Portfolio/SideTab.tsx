@@ -5,6 +5,7 @@ import SkillsSection from "./SkillsSection";
 import ProjectsSection from "./ProjectsSection";
 import ContactSection from "./ContactSection";
 import { benzinSemibold } from "../../app/fonts/fonts";
+import { useState } from "react";
 
 interface SideTabProps {
   content: string;

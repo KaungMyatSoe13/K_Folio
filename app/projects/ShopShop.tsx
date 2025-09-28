@@ -1,121 +1,377 @@
-// Example: components/Projects/ShopShop.tsx
 import React from "react";
-import Image from "next/image";
-import { vt323 } from "../../app/fonts/fonts";
+import { vt323 } from "../fonts/fonts";
+import AsciiVerticalLine from "@/components/ui/AsciiVerticalLine";
+import AsciiLine from "@/components/ui/AsciiLine";
+import { benzinSemibold } from "../fonts/fonts";
+import AsciiGridBackground from "../../components/ui/AsciiGridBackground";
+import {
+  MoreHorizontal,
+  ExternalLink,
+  Smartphone,
+  Github,
+  Globe,
+  Calendar,
+  CheckCircle,
+} from "lucide-react";
+import { projectDetails } from "../../components/data/projectDetails";
 
 export default function ShopShop() {
+  const columns = 6;
+  const project = projectDetails.shopshop;
+
   return (
-    <div className={`${vt323.className} space-y-8`}>
-      {/* Custom Header for ShopShop */}
-      <div className="bg-gradient-to-r from-purple-900 to-blue-900 p-6 rounded-lg border border-cyan-400">
-        <h1 className="text-4xl text-cyan-400 mb-2">ShopShop</h1>
-        <p className="text-gray-300">E-commerce Platform with Modern Design</p>
-      </div>
-
-      {/* Custom layout for ShopShop */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 space-y-6">
-          {/* Hero Section */}
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-            <h2 className="text-2xl text-white mb-4">Project Overview</h2>
-            <p className="text-gray-300 mb-4">
-              ShopShop is a full-featured e-commerce platform built with modern
-              web technologies. It features a sleek design, advanced search
-              capabilities, and seamless checkout process.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                React
-              </span>
-              <span className="bg-green-600 text-white px-3 py-1 rounded text-sm">
-                Node.js
-              </span>
-              <span className="bg-purple-600 text-white px-3 py-1 rounded text-sm">
-                MongoDB
-              </span>
-            </div>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-cyan-400 mb-2">🛒 Shopping Cart</h3>
-              <p className="text-gray-300 text-sm">
-                Advanced cart with real-time updates
-              </p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-cyan-400 mb-2">💳 Payment Gateway</h3>
-              <p className="text-gray-300 text-sm">Secure payment processing</p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-cyan-400 mb-2">📱 Responsive</h3>
-              <p className="text-gray-300 text-sm">
-                Mobile-first design approach
-              </p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg border border-gray-600">
-              <h3 className="text-lg text-cyan-400 mb-2">🔍 Search</h3>
-              <p className="text-gray-300 text-sm">AI-powered product search</p>
-            </div>
-          </div>
+    <div
+      className={`${vt323.className} flex flex-row justify-center sm:justify-start h-full w-full`}
+    >
+      <AsciiVerticalLine className="opacity-50" />
+      <div className="flex flex-col w-full relative">
+        <AsciiLine char="-" className="opacity-50" />
+        <div className="flex flex-row">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-400 pl-5">
+            {project.name}
+          </h1>
         </div>
+        <AsciiLine char="-" className="opacity-50" />
 
-        {/* Sidebar */}
-        <div className="space-y-6">
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-            <h3 className="text-xl text-white mb-4">Project Stats</h3>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-400">Lines of Code:</span>
-                <span className="text-cyan-400">15,000+</span>
+        {/* Content container with relative positioning and full height */}
+        <div className="relative w-full h-full flex-1 flex-col">
+          {/* Background positioned absolutely behind content */}
+          <div className="absolute inset-0 z-0">
+            <AsciiGridBackground columns={columns} className="opacity-50" />
+          </div>
+
+          {/* Content with higher z-index */}
+          <div className="relative z-10 p-2 sm:p-4 h-full overflow-y-auto">
+            <div className="flex flex-col gap-4 sm:gap-6 h-full">
+              {/* Video Section */}
+              <div className="flex justify-center w-full">
+                <div
+                  className="relative  
+                            rounded-lg  
+                            overflow-hidden  
+                            shadow-lg  
+                            max-h-[100vh]
+                            max-w-[70vw]
+                            sm:max-w-[85vw] 
+                            md:max-w-2xl  
+                            lg:max-w-4xl
+                            sm:h-[50vh]
+                            md:h-[60vh]
+                            lg:h-[70vh]
+                          "
+                  style={{ aspectRatio: "1900/962" }}
+                >
+                  {/* Video */}
+                  <div className="relative w-full h-full flex items-center justify-center ">
+                    {project.video ? (
+                      <video
+                        src={project.video[0]}
+                        autoPlay
+                        muted
+                        playsInline
+                        controls={false}
+                        className="w-full h-full object-contain rounded-2xl"
+                        style={{ maxHeight: "100%" }}
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <div className="text-gray-500">No video available</div>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Components:</span>
-                <span className="text-cyan-400">50+</span>
+
+              {/* Project Details Section */}
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 text-gray-300 ">
+                {/* Description & Links Combined */}
+                <div className="bg-gray-400/10 rounded-lg p-3 sm:p-4  md:col-span-2 lg:col-span-1 order-1">
+                  <h2 className="text-xl sm:text-2xl text-gray-200 mb-2 sm:mb-3 font-bold">
+                    /DESCRIPTION
+                  </h2>
+                  <div className="text-md sm:text-lg leading-relaxed space-y-2">
+                    <p className="uppercase">{project.shortDescription}</p>
+                    <p className="text-gray-400 text-md sm:text-lg">
+                      PLATFORM:{" "}
+                      <span className="text-gray-200">{project.platform}</span>
+                    </p>
+                    <p className="text-gray-400 text-md sm:text-lg">
+                      ROLE:{" "}
+                      <span className="text-gray-200">{project.role}</span>
+                    </p>
+                    <p className="text-gray-400 text-md sm:text-lg">
+                      Year:{" "}
+                      <span className="text-gray-200">{project.year}</span>
+                    </p>
+                  </div>
+
+                  {/* Links Section */}
+                  <div className="mt-4 pt-3 border-t border-gray-600">
+                    <div className="space-y-2">
+                      {project.links.demo && (
+                        <a
+                          href={project.links.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors text-xs sm:text-sm"
+                        >
+                          <Globe className="w-3 h-3 sm:w-4 sm:h-4" />
+                          LIVE DEMO
+                        </a>
+                      )}
+
+                      {project.links.website && (
+                        <a
+                          href={project.links.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors text-xs sm:text-sm"
+                        >
+                          <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                          WEBSITE
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Technologies */}
+                <div className="bg-gray-400/10 rounded-lg p-3 sm:p-4 md:col-span-2 lg:col-span-1 order-2 lg:order-2">
+                  <h2 className="text-xl sm:text-2xl text-gray-200 mb-2 sm:mb-3 font-bold">
+                    /TECHNOLOGIES
+                  </h2>
+                  <div className="space-y-2 sm:space-y-3">
+                    {/* Frontend */}
+                    {project.technologies.frontend.length > 0 && (
+                      <div>
+                        <p className="text-md sm:text-lg text-gray-400 mb-1">
+                          FRONTEND
+                        </p>
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
+                          {project.technologies.frontend.map((tech, index) => (
+                            <span
+                              key={index}
+                              className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-blue-600/20 border border-blue-500/30 rounded text-xs sm:text-sm text-blue-300"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Backend */}
+                    {project.technologies.backend.length > 0 && (
+                      <div>
+                        <p className="text-xs text-gray-400 mb-1 text-md sm:text-lg">
+                          BACKEND
+                        </p>
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
+                          {project.technologies.backend.map((tech, index) => (
+                            <span
+                              key={index}
+                              className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-green-600/20 border border-green-500/30 rounded text-xs text-green-300 text-xs sm:text-sm"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Database */}
+                    {project.technologies.database.length > 0 && (
+                      <div>
+                        <p className="text-xs text-gray-400 mb-1 text-md sm:text-lg">
+                          DATABASE
+                        </p>
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
+                          {project.technologies.database.map((tech, index) => (
+                            <span
+                              key={index}
+                              className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-orange-600/20 border border-orange-500/30 rounded text-xs text-orange-300 text-xs sm:text-sm"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">API Endpoints:</span>
-                <span className="text-cyan-400">25</span>
+
+              {/* Images Section */}
+              <div className="flex justify-center w-full flex-col mt-10">
+                <h1 className="text-2xl sm:text-4xl text-gray-200 mb-4 sm:mb-6 text-center">
+                  /ShopShop User
+                </h1>
+                {/* User Authentication */}
+                {project.images && project.images[0] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6 ">
+                      /User Authentication
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[0]} // SignInUp.png
+                          alt="User Authentication"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Home Page */}
+                {project.images && project.images[1] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6 ">
+                      /Home Page
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[1]} // Home.png
+                          alt="Home Page"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Product Details */}
+                {project.images && project.images[2] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6 ">
+                      /Product
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[2]} // Product.png
+                          alt="Product Details"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Shopping Cart */}
+                {project.images && project.images[3] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6 ">
+                      /Cart
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[3]} // Cart.png
+                          alt="Shopping Cart"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* User Profile */}
+                {project.images && project.images[4] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6 ">
+                      /Profile
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[4]} // Profile.png
+                          alt="User Profile"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+                <h1 className="text-2xl sm:text-4xl text-gray-200 mb-4 sm:mb-6 text-center mt-30">
+                  /ShopShop Admin
+                </h1>
+
+                {/* Admin Dashboard */}
+                {project.images && project.images[5] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6 ">
+                      /Dashboard
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[5]} // AdminHome.png
+                          alt="Admin Dashboard"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Admin Order Tracking */}
+                {project.images && project.images[6] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6 ">
+                      /Track Orders
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[6]} // AdminTrackOrders.png
+                          alt="Admin Order Tracking"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Admin Add Product */}
+                {project.images && project.images[7] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6">
+                      /Add Products
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[7]} // AdminAddProduct.png
+                          alt="Admin Add Product"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+                {/* Admin Add Product */}
+                {project.images && project.images[8] && (
+                  <>
+                    <h2 className="text-xl sm:text-2xl text-gray-200 mb-4 sm:mb-6">
+                      /Manage Products
+                    </h2>
+                    <div className="flex justify-center mb-8 sm:mb-12">
+                      <div className="w-full max-w-2xl lg:max-w-4xl">
+                        <img
+                          src={project.images[8]} // AdminAddProduct.png
+                          alt="Admin Add Product"
+                          className="w-full h-auto rounded-lg shadow-lg object-contain"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
-
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-            <h3 className="text-xl text-white mb-4">Links</h3>
-            <div className="space-y-2">
-              <a href="#" className="block text-cyan-400 hover:underline">
-                Live Demo →
-              </a>
-              <a href="#" className="block text-cyan-400 hover:underline">
-                GitHub →
-              </a>
-              <a href="#" className="block text-cyan-400 hover:underline">
-                Case Study →
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Screenshot Gallery */}
-      <div className="bg-gray-800 p-6 rounded-lg border border-gray-600">
-        <h2 className="text-2xl text-white mb-4">Screenshots</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Image
-            src="/test.png"
-            alt="ShopShop Homepage"
-            width={400}
-            height={300}
-            className="rounded-lg border border-gray-600"
-          />
-          <Image
-            src="/test.png"
-            alt="ShopShop Product Page"
-            width={400}
-            height={300}
-            className="rounded-lg border border-gray-600"
-          />
         </div>
       </div>
     </div>
