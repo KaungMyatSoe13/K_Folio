@@ -8,11 +8,9 @@ import { vt323 } from "../../app/fonts/fonts";
 import { benzinSemibold } from "../../app/fonts/fonts";
 
 // Import working components directly
-import ShopShop from "../../app/projects/ShopShop";
-import PeakFit from "../../app/projects/Peakfit";
-import EmoFace from "../../app/projects/EmoFace";
-import IJudge from "../../app/projects/iJudge";
-
+const ShopShop = lazy(() => import("../../app/projects/ShopShop"));
+const PeakFit = lazy(() => import("../../app/projects/Peakfit"));
+const EmoFace = lazy(() => import("../../app/projects/EmoFace"));
 // Use dynamic import for MyanglishTranslator to avoid the import issue
 const MyanglishTranslator = lazy(
   () => import("../../app/projects/MyanglishTranslator")
@@ -34,10 +32,7 @@ interface TerminalProps {
 // Memoized Loading component
 const LoadingComponent = memo(() => (
   <div className={`${vt323.className} p-4`}>
-    <div className="text-orange-400 text-xl mb-4">Loading...</div>
-    <div className="text-gray-300">
-      Loading Myanglish Translator component...
-    </div>
+    <div className="text-orange-400 text-xl mb-4">Loading Project...</div>
   </div>
 ));
 
@@ -168,18 +163,29 @@ export default function Terminal({
     );
 
     const componentMap: Record<string, React.ReactNode> = {
-      shopshop: <ShopShop />,
-      peakfit: <PeakFit />,
+      shopshop: (
+        <Suspense fallback={<LoadingComponent />}>
+          <ShopShop />
+        </Suspense>
+      ),
+      peakfit: (
+        <Suspense fallback={<LoadingComponent />}>
+          <PeakFit />
+        </Suspense>
+      ),
       myanglish_translator: (
         <Suspense fallback={<LoadingComponent />}>
           <MyanglishTranslator />
         </Suspense>
       ),
-      emoface: <EmoFace />,
-      ijudge: <IJudge />,
+      emoface: (
+        <Suspense fallback={<LoadingComponent />}>
+          <EmoFace />
+        </Suspense>
+      ),
+
       k_folio: <div>K_folio Project</div>,
     };
-
     return (
       componentMap[projectName] || (
         <div className={`${vt323.className} p-4`}>
@@ -243,10 +249,10 @@ export default function Terminal({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {renderProjectComponent}
-          <Watermark
-            text="PeakFit"
+          {/* <Watermark
+            text={currentTab.name.replace(/\.js$/, "")}
             className={`absolute right-[-650] top-75 -translate-x-1/2 -rotate-90 scale-y-[1.4] inline-block h-fit leading-none text-[20vh] text-white/10 pointer-events-none select-none ${benzinSemibold.className}`}
-          />
+          /> */}
         </div>
       </div>
     );

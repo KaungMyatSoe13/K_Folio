@@ -4,6 +4,7 @@ import Terminal from "@/components/Terminal/Terminal";
 import SideTab from "@/components/Portfolio/SideTab";
 import Navbar from "@/components/Navbars/Navbar";
 import SideTabNavbar from "@/components/Navbars/SideTabNavbar";
+import SlideInMenu from "@/components/Menu/SlideInMenu";
 
 interface Tab {
   id: string;
@@ -20,7 +21,8 @@ interface MenuTab {
 export default function Home() {
   const [showSideTab, setShowSideTab] = useState<boolean>(false);
   const [sideTabContent, setSideTabContent] = useState<string>("");
-  const [isProjectActive, setIsProjectActive] = useState<boolean>(false); // New state
+  const [isProjectActive, setIsProjectActive] = useState<boolean>(false);
+  const [showFloatingMenu, setShowFloatingMenu] = useState<boolean>(false);
 
   // Tab management state
   const [activeTab, setActiveTab] = useState("K_folio.js");
@@ -127,10 +129,10 @@ export default function Home() {
     }
 
     setActiveTab(tabId);
-    setIsProjectActive(true); // Set project as active
-    setShowSideTab(false); // Hide SideTab when project is clicked
+    setIsProjectActive(true);
+    setShowSideTab(false);
 
-    // Close SideTab on mobile (keeping your existing logic)
+    // Close SideTab on mobile
     if (window.innerWidth < 768) {
       setShowSideTab(false);
     }
@@ -146,11 +148,12 @@ export default function Home() {
       setShowSideTab(false);
     } else {
       setIsProjectActive(false);
+      setShowFloatingMenu(false);
     }
   };
 
   const handleTabClose = (tabId: string) => {
-    if (tabs.length === 1) return; // Don't close if it's the only tab
+    if (tabs.length === 1) return;
 
     const newTabs = tabs.filter((tab) => tab.id !== tabId);
     setTabs(newTabs);
@@ -165,14 +168,9 @@ export default function Home() {
         setShowSideTab(false);
       } else {
         setIsProjectActive(false);
+        setShowFloatingMenu(false);
       }
     }
-  };
-
-  const getProjectDetails = (projectName: string) => {
-    const projects = [{ name: "", platform: "", tech: "" }];
-
-    return projects.find((p) => p.name === projectName);
   };
 
   return (
@@ -198,29 +196,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Show SideTab button when project is active */}
-          {isProjectActive && (
-            <button
-              onClick={handleShowSideTab}
-              className="fixed top-1/2 right-0 -translate-y-1/2 z-50 hover:bg-gray-700 bg-gray-600 text-white p-3 rounded-l-lg shadow-lg transition-colors "
-              title="Show Menu"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          )}
-
           {/* Right side - SideTab with its own navbar */}
           {showSideTab && !isProjectActive && (
             <div
@@ -241,6 +216,15 @@ export default function Home() {
                 onProjectClick={handleProjectClick}
               />
             </div>
+          )}
+
+          {/* Slide-in menu when project is active */}
+          {isProjectActive && (
+            <SlideInMenu
+              onProjectClick={handleProjectClick}
+              showFloatingMenu={showFloatingMenu}
+              setShowFloatingMenu={setShowFloatingMenu}
+            />
           )}
         </div>
       </div>
@@ -265,29 +249,6 @@ export default function Home() {
           />
         )}
 
-        {/* Show SideTab button on mobile when project is active */}
-        {isProjectActive && (
-          <button
-            onClick={handleShowSideTab}
-            className="hidden sm:fixed top-4 right-4 z-50 bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-lg shadow-lg transition-colors border-2 border-cyan-400"
-            title="Show Menu"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-        )}
-
         <div className="flex flex-1 flex-row">
           {!showSideTab ? (
             <Terminal
@@ -302,6 +263,15 @@ export default function Home() {
             />
           )}
         </div>
+
+        {/* Mobile slide-in menu when project is active */}
+        {isProjectActive && (
+          <SlideInMenu
+            onProjectClick={handleProjectClick}
+            showFloatingMenu={showFloatingMenu}
+            setShowFloatingMenu={setShowFloatingMenu}
+          />
+        )}
       </div>
     </main>
   );

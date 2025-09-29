@@ -38,6 +38,12 @@ export default function Peakfit() {
           {/* Background positioned absolutely behind content */}
           <div className="absolute inset-0 z-0">
             <AsciiGridBackground columns={columns} className="opacity-50" />
+            <p
+              className={`absolute  right-[80] top-65  -translate-y-1/2 translate-x-1/2 -rotate-90 scale-y-[1.4] inline-block h-fit leading-none 
+              text-[150px] text-white/10 pointer-events-none select-none z-[5] ${benzinSemibold.className}`}
+            >
+              {project.name}
+            </p>
           </div>
 
           {/* Content with higher z-index */}
@@ -59,10 +65,7 @@ export default function Peakfit() {
                             md:h-[60vh]
                             lg:h-[70vh]
 
-                            bg-yellow-500      
-                            sm:bg-red-500 
-                            md:bg-green-500
-                            lg:bg-blue-500
+                      
                                            
                           "
                   style={{ aspectRatio: "1900/962" }}
@@ -225,10 +228,7 @@ export default function Peakfit() {
                             md:h-[60vh]
                             lg:h-[70vh]
 
-                            bg-yellow-500      
-                            sm:bg-red-500 
-                            md:bg-green-500
-                            lg:bg-blue-500
+                            
                                    
                           "
                   style={{ aspectRatio: "1900/962" }}

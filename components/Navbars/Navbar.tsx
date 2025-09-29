@@ -1,6 +1,14 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Sun, Moon, X, Minimize2, Square, ChevronRight } from "lucide-react";
+import {
+  Sun,
+  Moon,
+  X,
+  Minimize2,
+  Square,
+  ChevronRight,
+  FileText,
+} from "lucide-react";
 
 interface Tab {
   id: string;
@@ -202,12 +210,15 @@ const Navbar = ({ tabs, activeTab, onTabClick, onTabClose }: NavbarProps) => {
 
         {/* Right side controls */}
         <div className="flex items-center space-x-1 px-2 flex-shrink-0">
-          <button
+          <a
+            href="/resume/KaungMyatSoe_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="p-1.5 rounded hover:bg-gray-600 text-[#eaeaea] transition-colors duration-150"
-            title="Theme toggle"
+            title="Resume"
           >
-            <Sun size={16} />
-          </button>
+            <FileText size={16} />
+          </a>
 
           <div className="flex items-center space-x-1 ml-2">
             <button
