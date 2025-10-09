@@ -243,6 +243,61 @@ export const projects: Record<string, Project> = {
     ],
     video: [""],
   },
+  kotobalab: {
+    name: "KotobaLab",
+    platform: "Web Application",
+    tech: "React/TypeScript/Tailwind/Firebase",
+    description:
+      "A beautiful, interactive web application for practicing Japanese vocabulary with audio pronunciation. Choose from pre-made lessons or upload your own vocabulary list to test yourself with this engaging quiz interface.",
+    shortDescription:
+      "Japanese Vocabulary Quiz app with audio pronunciation, Excel upload support, and multiple practice modes for self-learners.",
+    role: "Full-Stack Development",
+    details: {
+      features: [
+        "Two practice modes: choose pre-made lessons or upload custom Excel files",
+        "Audio pronunciation using Web Speech API",
+        "Multi-lesson selection for combined practice sessions",
+        "Randomized word order for better retention",
+        "Keyboard shortcuts for navigation",
+        "Progress tracking with visual progress bar",
+        "Hide/Reveal answer mode for self-testing",
+        "Responsive design across devices",
+        "Modern UI with gradient design and animations",
+        "Downloadable Excel template for quick setup",
+      ],
+      challenges: [
+        "Implementing real-time text-to-speech for Japanese pronunciation",
+        "Processing and validating custom Excel uploads",
+        "Ensuring smooth UX across desktop and mobile browsers",
+        "Handling autoplay restrictions for audio on mobile devices",
+        "Managing state for randomized practice sessions",
+      ],
+      highlights: [
+        "Personal project born from real language learning needs",
+        "Interactive and engaging practice interface",
+        "Supports both standard textbook lessons and user-uploaded vocab lists",
+        "Seamless integration of Web Speech API for live audio",
+        "Practical educational tool for independent learners",
+      ],
+    },
+    links: {
+      website: "https://kotoba-lab.vercel.app/",
+      github: "https://github.com/KaungMyatSoe13/KotobaLab",
+    },
+    technologies: {
+      frontend: ["React", "TypeScript", "Tailwind CSS", "Lucide React"],
+      backend: ["Firebase Firestore"],
+      database: ["Firebase Firestore"],
+    },
+    year: "2025",
+    status: "completed",
+    images: [
+      "/KotobaLab/Home.png",
+      "/KotobaLab/Lesson.png",
+      "/KotobaLab/Quiz.png",
+    ],
+    video: ["/KotobaLab/demo.mp4"],
+  },
 };
 
 export { projects as projectDetails };

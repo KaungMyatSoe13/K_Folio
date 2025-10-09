@@ -25,4 +25,9 @@ export const projects: Project[] = [
     platform: "AI/ML",
     tech: "TensorFlow + PyTorch + VGG",
   },
+  {
+    name: "KotobaLab",
+    platform: "Web App",
+    tech: "Next.js + Firebase + Vercel",
+  },
 ];

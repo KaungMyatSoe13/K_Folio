@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { vt323 } from "../fonts/fonts";
 import AsciiVerticalLine from "@/components/ui/AsciiVerticalLine";
 import AsciiLine from "@/components/ui/AsciiLine";
@@ -19,6 +20,23 @@ export default function Peakfit() {
   const columns = 6;
   const project = projectDetails.peakfit;
 
+  // State management for loading sequence
+  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    // Simulate background loading
+    const timer = setTimeout(() => {
+      setIsBackgroundLoaded(true);
+      // After background loads, wait a bit then show video
+      setTimeout(() => {
+        setShowVideo(true);
+      }, 300);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       className={`${vt323.className} flex flex-row justify-center sm:justify-start h-full w-full`}
@@ -35,8 +53,13 @@ export default function Peakfit() {
 
         {/* Content container with relative positioning and full height */}
         <div className="relative w-full h-full flex-1 flex-col">
-          {/* Background positioned absolutely behind content */}
-          <div className="absolute inset-0 z-0">
+          {/* Background positioned absolutely behind content - with fade in animation */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isBackgroundLoaded ? 1 : 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 z-0"
+          >
             <AsciiGridBackground columns={columns} className="opacity-50" />
             <p
               className={`absolute  right-[80] top-65  -translate-y-1/2 translate-x-1/2 -rotate-90 scale-y-[1.4] inline-block h-fit leading-none 
@@ -44,14 +67,28 @@ export default function Peakfit() {
             >
               {project.name}
             </p>
-          </div>
+          </motion.div>
 
           {/* Content with higher z-index */}
           <div className="relative z-10 p-2 sm:p-4 h-full overflow-y-auto">
             <div className="flex flex-col gap-4 sm:gap-6 h-full">
-              {/* Video Section */}
+              {/* Video Section - with motion animation */}
               <div className="flex justify-center w-full">
-                <div
+                <motion.div
+                  initial={{ opacity: 0, y: 60, scale: 0.95 }}
+                  animate={
+                    showVideo
+                      ? {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                        }
+                      : {}
+                  }
+                  transition={{
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1], // Custom easing for smooth effect
+                  }}
                   className="relative  
                             rounded-lg  
                             overflow-hidden  
@@ -88,7 +125,7 @@ export default function Peakfit() {
                       <div className="text-gray-500">No video available</div>
                     )}
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Project Details Section */}

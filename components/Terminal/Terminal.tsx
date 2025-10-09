@@ -1,6 +1,5 @@
 "use client";
 import React, { Suspense, lazy, memo, useMemo } from "react";
-import { useTerminal } from "../../app/hooks/useTerminal";
 import Menu from "../Menu/Menu";
 import SideNavbar from "../Navbars/SideNavbar";
 import { vt323 } from "../../app/fonts/fonts";
@@ -10,6 +9,7 @@ import Kfolio from "./Kfolio";
 const ShopShop = lazy(() => import("../../app/projects/ShopShop"));
 const PeakFit = lazy(() => import("../../app/projects/Peakfit"));
 const EmoFace = lazy(() => import("../../app/projects/EmoFace"));
+const KotobaLab = lazy(() => import("../../app/projects/KotobaLab"));
 // Use dynamic import for MyanglishTranslator to avoid the import issue
 const MyanglishTranslator = lazy(
   () => import("../../app/projects/MyanglishTranslator")
@@ -43,16 +43,6 @@ export default function Terminal({
   activeTab,
   onProjectClick,
 }: TerminalProps) {
-  const {
-    displayedText,
-    userInput,
-    output,
-    showMenu,
-    animationDone,
-    handleInputChange,
-    handleInputSubmit,
-  } = useTerminal();
-
   // Memoize current tab calculation
   const currentTab = useMemo(
     () => tabs.find((tab) => tab.id === activeTab),
@@ -102,6 +92,11 @@ export default function Terminal({
           <EmoFace />
         </Suspense>
       ),
+      kotobalab: (
+        <Suspense fallback={<LoadingComponent />}>
+          <KotobaLab />
+        </Suspense>
+      ),
     };
     return (
       componentMap[projectName] || (
@@ -148,16 +143,5 @@ export default function Terminal({
   }
 
   // Default terminal view for K_folio.js tab with ASCII Grid Background
-  return (
-    <Kfolio
-      displayedText={displayedText}
-      userInput={userInput}
-      output={output}
-      showMenu={showMenu}
-      animationDone={animationDone}
-      handleInputChange={handleInputChange}
-      handleInputSubmit={handleInputSubmit}
-      onMenuClick={onMenuClick}
-    />
-  );
+  return <Kfolio onMenuClick={onMenuClick} />;
 }

@@ -77,12 +77,6 @@ export default function Home() {
     setShowSideTab(false);
   };
 
-  // New function to show SideTab back
-  const handleShowSideTab = (): void => {
-    setIsProjectActive(false);
-    setShowSideTab(true);
-  };
-
   // Side tab management functions
   const handleSideTabClick = (tabId: string) => {
     setActiveSideTab(tabId);
@@ -201,6 +195,8 @@ export default function Home() {
             <div
               className={`flex flex-col h-full w-full overflow-y-hidden md:w-[50%] lg:w-[45%] ${
                 sideTabContent === "Projects" ? "xl:w-[40%]" : "xl:w-[30%]"
+              } ${
+                sideTabContent === "About" ? "xl:w-[50%]" : "xl:w-[30%]"
               } bg-gray-900`}
             >
               <SideTabNavbar

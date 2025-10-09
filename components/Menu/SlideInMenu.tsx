@@ -88,6 +88,15 @@ export default function SlideInMenu({
           >
             Myanglish Translator
           </button>
+          <button
+            onClick={() => {
+              onProjectClick("KotobaLab");
+              setShowFloatingMenu(false);
+            }}
+            className="text-left text-gray-300 text-sm py-2 px-3 hover:bg-gray-700 rounded transition-colors"
+          >
+            KotobaLab
+          </button>
         </div>
       </div>
     </div>

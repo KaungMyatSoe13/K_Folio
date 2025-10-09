@@ -28,3 +28,17 @@ export const benzinSemibold = localFont({
   style: "normal",
   variable: "--font-benzin-semibold",
 });
+
+export const alansans = localFont({
+  src: "./AlanSans-VariableFont_wght.ttf", // your TTF file
+  weight: "600", // semibold
+  style: "normal",
+  variable: "--font-alan-sans",
+});
+
+export const playwrite = localFont({
+  src: "./PlaywriteDEGrundGuides-Regular.ttf", // your TTF file
+  weight: "400", // regular
+  style: "normal",
+  variable: "--font-playwrite",
+});
