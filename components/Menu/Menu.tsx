@@ -61,8 +61,9 @@ export default function Menu({ onMenuClick }: MenuProps) {
   const outerScrollRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [maxScroll, setMaxScroll] = useState(1);
-  const [windowWidth, setWindowWidth] = useState(0);
-
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 769
+  );
   useEffect(() => {
     // Set initial window width after mount
     setWindowWidth(window.innerWidth);
@@ -129,14 +130,14 @@ export default function Menu({ onMenuClick }: MenuProps) {
         }}
       >
         <div
-          className="flex flex-col md:flex-row justify-center items-center mx-auto my-auto gap-4 px-4 py-8 sm:py-0 transition-all duration-300 w-full"
+          className="flex flex-col md:flex-row justify-center items-center mx-auto my-auto gap-4 px-4 py-8 sm:py-0 w-full"
           style={{
             height: windowWidth >= 640 ? `${70 - progress * 20}%` : undefined,
-            width: windowWidth >= 640 ? `${100 - progress * 25}%` : undefined,
+            width: windowWidth >= 640 ? `${100 - progress * 30}%` : undefined,
           }}
         >
           {menuItems.map((item, index) => (
-            <motion.button
+            <button
               key={item.name}
               onClick={() => onMenuClick(item.content)}
               className="flex-1 min-w-0 w-full md:w-auto h-80 sm:h-full flex items-center justify-center 
@@ -144,17 +145,9 @@ export default function Menu({ onMenuClick }: MenuProps) {
                 bg-gray-500/10 hover:bg-cyan-400/10 hover:text-cyan-200 
                 transition-colors
                 sm:mr-6 md:mr-10 font-semibold"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               {item.design}
-            </motion.button>
+            </button>
           ))}
         </div>
       </div>

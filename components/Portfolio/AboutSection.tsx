@@ -303,7 +303,7 @@ const AboutSection: React.FC = () => {
             </div>
 
             {/* Content slides up from bottom */}
-            <div className="backdrop-blur-lg p-6 sm:p-8 shadow-2xl hover:bg-white/15 transition-all duration-300 overflow-hidden">
+            <div className="backdrop-blur-lg p-6 sm:p-8 shadow-2xl transition-all duration-300 overflow-hidden">
               <div
                 className={`transition-all duration-1000 delay-300 ${
                   isVisible["about"]
