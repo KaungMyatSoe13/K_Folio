@@ -1,13 +1,16 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { gloriaHallelujah } from "@/app/fonts/fonts";
 
 const menuItems = [
   {
     name: "AboutMe",
     content: "About",
     design: (
-      <div className="flex bg-blue-500/10 h-[40vh] w-full sm:h-full items-center justify-center overflow-hidden">
+      <div
+        className={`flex bg-blue-500/10 h-[40vh] w-full sm:h-full items-center justify-center overflow-hidden ${gloriaHallelujah.className}`}
+      >
         <span
           className="font-bold leading-none"
           style={{ fontSize: "clamp(2rem, min(20vh, 15vw), 25rem)" }}
@@ -21,7 +24,9 @@ const menuItems = [
     name: "Projects",
     content: "Projects",
     design: (
-      <div className="flex bg-blue-500/10 h-[40vh]  w-full sm:h-full items-center justify-center overflow-hidden">
+      <div
+        className={`flex bg-blue-500/10 h-[40vh]  w-full sm:h-full items-center justify-center overflow-hidden ${gloriaHallelujah.className}`}
+      >
         <span
           className="font-bold leading-none"
           style={{ fontSize: "clamp(2rem, min(20vh, 15vw), 25rem)" }}
@@ -32,21 +37,19 @@ const menuItems = [
     ),
   },
   {
-    name: "Contact",
-    content: "Contact",
+    name: "BeyondTech",
+    content: "BeyondTech",
     design: (
-      <div className="flex bg-blue-500/10  h-[40vh] w-full sm:h-full items-center justify-center overflow-hidden">
+      <div
+        className={`flex bg-blue-500/10  h-[40vh] w-full sm:h-full items-center justify-center overflow-hidden ${gloriaHallelujah.className}`}
+      >
         <span
           className="font-bold leading-none"
-          style={{ fontSize: "clamp(2rem, min(20vh, 15vw), 25rem)" }}
+          style={{ fontSize: "clamp(1rem, min(15vh, 10vw), 20rem)" }}
         >
-          Find
-        </span>
-        <span
-          className="font-bold leading-none"
-          style={{ fontSize: "clamp(rem, min(10vh, 5vw), 15rem)" }}
-        >
-          Me
+          Beyond
+          <br />
+          Tech!
         </span>
       </div>
     ),
@@ -61,11 +64,29 @@ export default function Menu({ onMenuClick }: MenuProps) {
   const outerScrollRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [maxScroll, setMaxScroll] = useState(1);
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 769
-  );
+  const [windowWidth, setWindowWidth] = useState<number | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const [smoothProgress, setSmoothProgress] = useState(0);
   useEffect(() => {
-    // Set initial window width after mount
+    const progress = Math.min(Math.max(scrollPosition / maxScroll, 0), 1);
+
+    // Smooth transition using requestAnimationFrame
+    let animationFrameId: number;
+    const animate = () => {
+      setSmoothProgress((prev) => {
+        const diff = progress - prev;
+        if (Math.abs(diff) < 0.001) return progress;
+        return prev + diff * 0.1; // Adjust 0.1 for slower/faster (lower = slower)
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [scrollPosition, maxScroll]);
+
+  useEffect(() => {
+    setIsMounted(true);
     setWindowWidth(window.innerWidth);
 
     const container = outerScrollRef.current;
@@ -101,7 +122,9 @@ export default function Menu({ onMenuClick }: MenuProps) {
   return (
     <div
       ref={outerScrollRef}
-      className="h-full w-full bg-transparent overflow-x-auto overflow-y-auto sm:overflow-y-hidden scrollbar-thin scrollbar-thumb-cyan-400/30 scrollbar-track-transparent"
+      className={`h-full w-full bg-transparent overflow-x-auto overflow-y-auto sm:overflow-y-hidden scrollbar-thin scrollbar-thumb-cyan-400/30 scrollbar-track-transparent ${
+        !isMounted ? "opacity-0" : "opacity-100 transition-opacity duration-300"
+      }`}
     >
       {/* Progress Track */}
       <div className="hidden md:block fixed top-10 left-1/2 -translate-x-1/2 w-64 h-3 bg-gray-900/80 rounded-full backdrop-blur-sm border border-gray-700/50 z-50 overflow-hidden">
@@ -113,10 +136,9 @@ export default function Menu({ onMenuClick }: MenuProps) {
 
         <motion.div
           className="absolute top-0 left-0 h-full w-1/4 bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-500 rounded-full shadow-lg shadow-cyan-500/50"
-          animate={{
-            x: `${progress * 300}%`, // 300% moves it across the remaining 75% of track
+          style={{
+            left: `${smoothProgress * 75}%`,
           }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
           <div className="absolute inset-0 bg-gray-500 rounded-full blur-md" />
           <div className="absolute inset-0 bg-white/20 rounded-full" />
@@ -126,14 +148,23 @@ export default function Menu({ onMenuClick }: MenuProps) {
       <div
         className="flex h-full sm:h-full"
         style={{
-          width: windowWidth >= 768 ? `${menuItems.length * 60}vw` : "100%",
+          width:
+            isMounted && windowWidth && windowWidth >= 768
+              ? `${menuItems.length * 60}vw`
+              : "100%",
         }}
       >
         <div
           className="flex flex-col md:flex-row justify-center items-center mx-auto my-auto gap-4 px-4 py-8 sm:py-0 w-full"
           style={{
-            height: windowWidth >= 640 ? `${70 - progress * 20}%` : undefined,
-            width: windowWidth >= 640 ? `${100 - progress * 30}%` : undefined,
+            height:
+              isMounted && windowWidth && windowWidth >= 640
+                ? `${70 - smoothProgress * 20}%`
+                : undefined,
+            width:
+              isMounted && windowWidth && windowWidth >= 640
+                ? `${100 - smoothProgress * 30}%`
+                : undefined,
           }}
         >
           {menuItems.map((item, index) => (

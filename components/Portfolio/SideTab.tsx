@@ -3,7 +3,7 @@ import AsciiVerticalLine from "../ui/AsciiVerticalLine";
 import AboutSection from "./AboutSection";
 import SkillsSection from "./SkillsSection";
 import ProjectsSection from "./ProjectsSection";
-import ContactSection from "./ContactSection";
+import BeyondTech from "./BeyondTech";
 import { benzinSemibold } from "../../app/fonts/fonts";
 import { useState } from "react";
 
@@ -22,8 +22,8 @@ export default function SideTab({ content, onProjectClick }: SideTabProps) {
         return <SkillsSection />;
       case "Projects":
         return <ProjectsSection onProjectClick={onProjectClick} />;
-      case "Contact":
-        return <ContactSection />;
+      case "BeyondTech":
+        return <BeyondTech />;
       default:
         return (
           <div className="text-center p-4 sm:p-8">
@@ -42,8 +42,8 @@ export default function SideTab({ content, onProjectClick }: SideTabProps) {
         return "MySkills";
       case "Projects":
         return "Projects";
-      case "Contact":
-        return "Contacts";
+      case "BeyondTech":
+        return "LifeStyle";
       default:
         return content; // Use the content directly for any other cases
     }

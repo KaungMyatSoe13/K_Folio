@@ -47,7 +47,7 @@ export default function Home() {
       { name: "About Me", content: "About" },
       { name: "Skills", content: "Skills" },
       { name: "Projects", content: "Projects" },
-      { name: "Contact", content: "Contact" },
+      { name: "BeyondTech", content: "BeyondTech" },
     ];
 
     const menuItem = menuItems.find((item) => item.content === content);
@@ -195,8 +195,8 @@ export default function Home() {
             <div
               className={`flex flex-col h-full w-full overflow-y-hidden md:w-[50%] lg:w-[45%] ${
                 sideTabContent === "Projects" ? "xl:w-[40%]" : "xl:w-[30%]"
-              } ${
-                sideTabContent === "About" ? "xl:w-[50%]" : "xl:w-[30%]"
+              } ${sideTabContent === "About" ? "xl:w-[50%]" : "xl:w-[30%]"} ${
+                sideTabContent === "BeyondTech" ? "xl:w-[50%]" : "xl:w-[30%]"
               } bg-gray-900`}
             >
               <SideTabNavbar

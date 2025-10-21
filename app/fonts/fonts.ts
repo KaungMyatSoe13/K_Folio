@@ -42,3 +42,9 @@ export const playwrite = localFont({
   style: "normal",
   variable: "--font-playwrite",
 });
+
+export const gloriaHallelujah = localFont({
+  src: "./GloriaHallelujah-Regular.ttf",
+  weight: "400",
+  variable: "--font-gloria-hallelujah",
+});
