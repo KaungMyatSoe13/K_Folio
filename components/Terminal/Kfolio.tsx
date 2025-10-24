@@ -6,18 +6,26 @@ import AsciiGridBackground from "../ui/AsciiGridBackground";
 import { benzinSemibold } from "../../app/fonts/fonts";
 
 // Memoized ASCII Background wrapper
-const MemoizedAsciiBackground = memo(
-  ({ columns, className }: { columns: number; className: string }) => (
-    <AsciiGridBackground columns={columns} className={className} />
-  )
-);
+const MemoizedAsciiBackground = memo(function MemoizedAsciiBackground({
+  columns,
+  className,
+}: {
+  columns: number;
+  className: string;
+}) {
+  return <AsciiGridBackground columns={columns} className={className} />;
+});
 
 // Memoized Watermark component
-const Watermark = memo(
-  ({ text, className }: { text: string; className: string }) => (
-    <p className={className}>{text}</p>
-  )
-);
+const Watermark = memo(function Watermark({
+  text,
+  className,
+}: {
+  text: string;
+  className: string;
+}) {
+  return <p className={className}>{text}</p>;
+});
 
 interface KfolioProps {
   onMenuClick: (content: string) => void;

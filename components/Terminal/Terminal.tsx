@@ -23,16 +23,16 @@ interface TerminalProps {
   onMenuClick: (content: string) => void;
   tabs: Tab[];
   activeTab: string;
-  onProjectClick?: (projectName: string) => void;
 }
 
 // Memoized Loading component
-const LoadingComponent = memo(() => (
-  <div className={`${vt323.className} p-4`}>
-    <div className="text-orange-400 text-xl mb-4">Loading Project...</div>
-  </div>
-));
-LoadingComponent.displayName = "LoadingComponent";
+const LoadingComponent = memo(function LoadingComponent() {
+  return (
+    <div className={`${vt323.className} p-4`}>
+      <div className="text-orange-400 text-xl mb-4">Loading Project...</div>
+    </div>
+  );
+});
 
 // Move componentMap outside the component to prevent recreation
 const COMPONENT_MAP: Record<string, React.ReactNode> = {
@@ -67,7 +67,6 @@ export default function Terminal({
   onMenuClick,
   tabs,
   activeTab,
-  onProjectClick,
 }: TerminalProps) {
   // Memoize current tab calculation
   const currentTab = useMemo(
