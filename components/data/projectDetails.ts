@@ -1,4 +1,5 @@
 import MyanglishTranslator from "@/app/projects/MyanglishTranslator";
+import { useLanguage } from "../ui/LanguageContext";
 
 export interface Project {
   name: string;

@@ -5,6 +5,7 @@ import ProjectDetails from "../../components/projects/ProjectDetails";
 import TypingText from "@/components/ui/TypingText";
 import AnimatedCard from "@/components/ui/AnimatedCard";
 import { Brain } from "lucide-react";
+import { useLanguage } from "../../components/ui/LanguageContext";
 
 export default function EmoFace() {
   const project = projectDetails.emoface;
@@ -14,6 +15,8 @@ export default function EmoFace() {
     { title: "Model Training Process", index: 2 },
     { title: "Performance Analytics", index: 3 },
   ];
+
+  const { t } = useLanguage();
 
   return (
     <ProjectLayout projectName={project.name} columns={6}>
@@ -44,7 +47,7 @@ export default function EmoFace() {
       {/* Project Details Grid */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 text-gray-300">
         <ProjectDetails
-          shortDescription={project.shortDescription}
+          shortDescription={t(`projects.emoface.description`)}
           platform={project.platform}
           role={project.role}
           year={project.year}

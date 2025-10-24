@@ -5,9 +5,12 @@ import ProjectVideo from "../../components/projects/ProjectVideo";
 import ProjectDetails from "../../components/projects/ProjectDetails";
 import ProjectTechnologies from "../../components/projects/ProjectTechnologies";
 import TypingText from "@/components/ui/TypingText";
+import { useLanguage } from "../../components/ui/LanguageContext";
 
 export default function KotobaLab() {
   const project = projectDetails.kotobalab;
+
+  const { t } = useLanguage();
 
   const imageSections = [
     { title: "Home Page Interface", index: 0 },
@@ -25,7 +28,7 @@ export default function KotobaLab() {
       {/* Project Details Grid */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 text-gray-300">
         <ProjectDetails
-          shortDescription={project.shortDescription}
+          shortDescription={t(`projects.kotobalab.description`)}
           platform={project.platform}
           role={project.role}
           year={project.year}

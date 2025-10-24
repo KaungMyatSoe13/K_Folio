@@ -5,6 +5,8 @@ import AsciiGridBackground from "../ui/AsciiGridBackground";
 import { alansans } from "@/app/fonts/fonts";
 import { playwrite } from "@/app/fonts/fonts";
 import { motion } from "framer-motion";
+import { useLanguage } from "../ui/LanguageContext";
+import { gloriaHallelujah, kaiseiDecol } from "@/app/fonts/fonts";
 
 import React, { useState, useEffect, useRef } from "react";
 import {
@@ -71,30 +73,65 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({
   const timeRef = useRef(Math.random() * 10); // Random start time
 
   useEffect(() => {
-    let animationId: number;
+    const handleHover = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
 
-    const animate = () => {
-      timeRef.current += 0.008;
+      // Add null check
+      if (!target || !target.classList) return;
 
-      const newX =
-        getInitialPosition().x +
-        Math.sin(timeRef.current * 0.7) * 25 +
-        Math.cos(timeRef.current * 0.3) * 10;
-      const newY =
-        getInitialPosition().y +
-        Math.cos(timeRef.current * 0.5) * 25 +
-        Math.sin(timeRef.current * 0.4) * 10;
+      // Handle school hover
+      if (target.classList.contains("school-hover")) {
+        const school = target.dataset.school;
+        showTooltip(e, target, `/images/schools/${school}.jpg`);
+      }
 
-      setPosition({
-        x: Math.max(10, Math.min(80, newX)),
-        y: Math.max(10, Math.min(80, newY)),
-      });
-
-      animationId = requestAnimationFrame(animate);
+      // Handle name hover
+      if (target.classList.contains("name-hover")) {
+        showTooltip(e, target, `/images/profile.jpg`);
+      }
     };
 
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
+    const showTooltip = (
+      e: MouseEvent,
+      target: HTMLElement,
+      imageSrc: string
+    ) => {
+      const tooltip = document.createElement("div");
+      tooltip.className = "hover-tooltip";
+      tooltip.style.cssText = `
+      position: fixed;
+      left: ${e.clientX + 20}px;
+      top: ${e.clientY + 20}px;
+      z-index: 9999;
+      pointer-events: none;
+    `;
+
+      const img = document.createElement("img");
+      img.src = imageSrc;
+      img.style.cssText =
+        "width: 200px; height: 150px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 2px solid #fff;";
+      tooltip.appendChild(img);
+      document.body.appendChild(tooltip);
+
+      const handleMouseMove = (e: MouseEvent) => {
+        tooltip.style.left = `${e.clientX + 20}px`;
+        tooltip.style.top = `${e.clientY + 20}px`;
+      };
+
+      const cleanup = () => {
+        tooltip.remove();
+        target.removeEventListener("mousemove", handleMouseMove);
+        target.removeEventListener("mouseleave", cleanup);
+        window.removeEventListener("scroll", cleanup, true);
+      };
+
+      target.addEventListener("mousemove", handleMouseMove);
+      target.addEventListener("mouseleave", cleanup);
+      window.addEventListener("scroll", cleanup, true);
+    };
+
+    document.addEventListener("mouseenter", handleHover, true);
+    return () => document.removeEventListener("mouseenter", handleHover, true);
   }, []);
 
   return (
@@ -127,6 +164,9 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({
 const AboutSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState<VisibilityState>({});
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const { t, language } = useLanguage();
+  const displayFont =
+    language === "ja" ? kaiseiDecol.className : alansans.className;
 
   const text1 = "Full Stack Developer";
   const text2 = "Web Developer";
@@ -170,6 +210,48 @@ const AboutSection: React.FC = () => {
     return () => {
       Object.values(observers).forEach((observer) => observer.disconnect());
     };
+  }, []);
+
+  useEffect(() => {
+    const handleSchoolHover = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains("school-hover")) {
+        const school = target.dataset.school;
+        const tooltip = document.createElement("div");
+        tooltip.className = "school-tooltip";
+        tooltip.style.cssText = `
+        position: fixed;
+        left: ${e.clientX + 20}px;
+        top: ${e.clientY + 20}px;
+        z-index: 9999;
+        pointer-events: none;
+      `;
+
+        const img = document.createElement("img");
+        img.src = `/images/schools/${school}.jpg`;
+        img.style.cssText =
+          "width: 200px; height: 150px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 2px solid #fff;";
+        tooltip.appendChild(img);
+        document.body.appendChild(tooltip);
+
+        target.addEventListener("mousemove", (e: MouseEvent) => {
+          tooltip.style.left = `${e.clientX + 20}px`;
+          tooltip.style.top = `${e.clientY + 20}px`;
+        });
+
+        target.addEventListener(
+          "mouseleave",
+          () => {
+            tooltip.remove();
+          },
+          { once: true }
+        );
+      }
+    };
+
+    document.addEventListener("mouseenter", handleSchoolHover, true);
+    return () =>
+      document.removeEventListener("mouseenter", handleSchoolHover, true);
   }, []);
 
   const timeline: TimelineItem[] = [
@@ -225,7 +307,7 @@ const AboutSection: React.FC = () => {
 
   return (
     <div
-      className={`${alansans.className} w-full max-w-full overflow-x-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900 text-white`}
+      className={`${displayFont} w-full max-w-full overflow-x-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900 text-white`}
     >
       {/* Hero Section - Name and Photo */}
       <section className=" flex relative overflow-hidden items-center justify-center mx-auto py-5"></section>
@@ -298,7 +380,7 @@ const AboutSection: React.FC = () => {
                     : "opacity-0 -translate-x-10"
                 }`}
               >
-                AboutMe
+                {t("about.aboutme.header")}
               </h2>
             </div>
 
@@ -311,30 +393,20 @@ const AboutSection: React.FC = () => {
                     : "opacity-0 translate-y-20"
                 }`}
               >
-                <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4">
-                  Hey, I&apos;m{" "}
-                  <span className="font-semibold text-blue-500 text-xl">
-                    Kaung Myat Soe
-                  </span>{" "}
-                  👋 You can call me{" "}
-                  <span className="font-semibold text-blue-500 text-xl">K</span>{" "}
-                  , since it is hard to pronounce. Currently based in Bangkok,
-                  Thailand, but originally from Myanmar. I&apos;m a developer
-                  who enjoys blending creativity, problem-solving, and tech into
-                  projects that make life easier (and more fun).
-                </p>
-                <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4">
-                  I studied Computer Science (Big Data) at the University of
-                  Wollongong, Australia, and also hold a Diploma in IT from SIM,
-                  Singapore. Along the way, I&apos;ve built full-stack apps with
-                  React/Next.js, explored AI with deep learning, and worked on
-                  projects like a fitness app, e-commerce platform, face
-                  recognition system, and even a Japanese vocabulary trainer.
-                </p>
+                <p
+                  className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4"
+                  dangerouslySetInnerHTML={{
+                    __html: t("about.aboutme.content1") as string,
+                  }}
+                />
+                <p
+                  className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4"
+                  dangerouslySetInnerHTML={{
+                    __html: t("about.aboutme.content2") as string,
+                  }}
+                />
                 <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-                  Beyond coding, I&apos;m curious, always learning, and love
-                  experimenting with new ideas—whether it&apos;s AI simulations,
-                  language learning, or just building cool stuff.
+                  {t("about.aboutme.content3")}
                 </p>
               </div>
             </div>
@@ -356,7 +428,7 @@ const AboutSection: React.FC = () => {
             }`}
           >
             <h2 className="border-b-2 border-purple-200 text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-gray-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
-              <span className=" ">MyTimeline</span>
+              <span className=" ">{t("about.timeline.header")}</span>
             </h2>
             <div className="space-y-4 sm:space-y-6">
               {timeline.map((item, index) => (
@@ -407,7 +479,7 @@ const AboutSection: React.FC = () => {
           >
             <h1 className="border-b-2 border-purple-200 text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-12 bg-gradient-to-r from-gray-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-2 sm:gap-3">
               <Code2 className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-400" />
-              TechStacks
+              {t("about.tech.header")}
             </h1>
 
             <div className="">
@@ -456,11 +528,10 @@ const AboutSection: React.FC = () => {
               {/* Center Text */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10 pointer-events-none">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Let&apos;s Connect
+                  {t("about.contact.header")}
                 </h2>
                 <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-md mx-auto px-4">
-                  I&apos;d love to hear from you! Reach out through any of these
-                  platforms.
+                  {t("about.contact.content")}
                 </p>
               </div>
 

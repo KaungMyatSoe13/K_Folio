@@ -112,90 +112,97 @@ export const artists: Artist[] = [
     songUrl: "/songs/Idiots-Ma Htike Tae A Linn.mp3",
     spotifyUrl: "https://open.spotify.com/artist/4FNDlNeRMeQYQCHnrmYUHB",
   },
-  {
-    id: "artist6",
-    name: "Wanted",
-    song: "Bal Lo Nhyine That Ya Ma Lal",
-    genre: "Rock",
-    image:
-      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601740/wan_d3xqff.jpg",
-    songUrl: "/songs/Wanted-Bal Lo Nhyein Thet Ya Ma Ll.mp3",
-    spotifyUrl: "https://open.spotify.com/artist/1pMV9AQ4RDndrJlxjgJy71",
-  },
-  {
-    id: "artist7",
-    name: "Big Bag",
-    song: "Way Thwar Lal",
-    genre: "Rock",
-    image:
-      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601741/bb_pi3pnm.jpg",
-    songUrl: "/songs/Big Bag-Way Twar Lal.mp3",
-    spotifyUrl: "https://open.spotify.com/artist/0bfrBj49eulFwRW1IIfi9G",
-  },
-  {
-    id: "artist8",
-    name: "For Revenge",
-    song: "Sadrah",
-    genre: "R&B",
-    image:
-      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601741/FR_dt0ooa.jpg",
-    songUrl: "/songs/For Revenge-Sadrah.mp3",
-    spotifyUrl: "https://open.spotify.com/artist/0bfrBj49eulFwRW1IIfi9G",
-  },
-  {
-    id: "artist9",
-    name: "Radiohead",
-    song: "Let Down",
-    genre: "",
-    image:
-      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760515809/Radiohead_dtgwdt.jpg",
-    songUrl: "/songs/Radiohead-Let Down.mp3",
-    spotifyUrl: "https://open.spotify.com/artist/4Z8W4fKeB5YxbusRsdQVPb",
-  },
-  {
-    id: "artist10",
-    name: "Hsu Rinna",
-    song: "Stay",
-    genre: "Hip Hop",
-    image:
-      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601740/hsu_lr7qxw.jpg",
-    songUrl: "/songs/Hsu Rinna-Stay.mp3",
-    spotifyUrl: "https://open.spotify.com/artist/3JkBn4Jpj7YzohZOgRzEfG",
-  },
+  // {
+  //   id: "artist6",
+  //   name: "Wanted",
+  //   song: "Bal Lo Nhyine That Ya Ma Lal",
+  //   genre: "Rock",
+  //   image:
+  //     "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601740/wan_d3xqff.jpg",
+  //   songUrl: "/songs/Wanted-Bal Lo Nhyein Thet Ya Ma Ll.mp3",
+  //   spotifyUrl: "https://open.spotify.com/artist/1pMV9AQ4RDndrJlxjgJy71",
+  // },
+  // {
+  //   id: "artist7",
+  //   name: "Big Bag",
+  //   song: "Way Thwar Lal",
+  //   genre: "Rock",
+  //   image:
+  //     "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601741/bb_pi3pnm.jpg",
+  //   songUrl: "/songs/Big Bag-Way Twar Lal.mp3",
+  //   spotifyUrl: "https://open.spotify.com/artist/0bfrBj49eulFwRW1IIfi9G",
+  // },
+  // {
+  //   id: "artist8",
+  //   name: "For Revenge",
+  //   song: "Sadrah",
+  //   genre: "R&B",
+  //   image:
+  //     "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601741/FR_dt0ooa.jpg",
+  //   songUrl: "/songs/For Revenge-Sadrah.mp3",
+  //   spotifyUrl: "https://open.spotify.com/artist/0bfrBj49eulFwRW1IIfi9G",
+  // },
+  // {
+  //   id: "artist9",
+  //   name: "Radiohead",
+  //   song: "Let Down",
+  //   genre: "",
+  //   image:
+  //     "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760515809/Radiohead_dtgwdt.jpg",
+  //   songUrl: "/songs/Radiohead-Let Down.mp3",
+  //   spotifyUrl: "https://open.spotify.com/artist/4Z8W4fKeB5YxbusRsdQVPb",
+  // },
+  // {
+  //   id: "artist10",
+  //   name: "Hsu Rinna",
+  //   song: "Stay",
+  //   genre: "Hip Hop",
+  //   image:
+  //     "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1760601740/hsu_lr7qxw.jpg",
+  //   songUrl: "/songs/Hsu Rinna-Stay.mp3",
+  //   spotifyUrl: "https://open.spotify.com/artist/3JkBn4Jpj7YzohZOgRzEfG",
+  // },
 ];
 
 export const countries: Country[] = [
   {
     id: "Indonesia",
-    name: "Indonesia",
+    name: "Indonesia(Bali)",
     year: "2024",
-    photos: ["/path/to/malaysia-photo-1.jpg", "/path/to/malaysia-photo-2.jpg"],
+    photos: [
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120607/photo_7_2025-10-22_15-09-37_rbsuyt.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120607/photo_6_2025-10-22_15-09-37_cexlyl.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120607/photo_3_2025-10-22_15-09-37_ubcfoh.jpg",
+    ],
   },
 
   {
     id: "Vietnam",
-    name: "Vietnam",
+    name: "Vietnam(Ho Chi Minh, Da Nang)",
     year: "2024",
     photos: [
-      "/path/to/thailand-photo-1.jpg",
-      "/path/to/thailand-photo-2.jpg",
-      "/path/to/thailand-photo-3.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120608/photo_10_2025-10-22_15-09-37_sfumwl.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120609/photo_12_2025-10-22_15-09-37_uxdoga.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120610/photo_9_2025-10-22_15-09-37_g0qusf.jpg   ",
     ],
   },
   {
     id: "Thailand",
-    name: "Thailand",
+    name: "Thailand(Bangkok, Chiang Mai)",
     year: "2024",
-    photos: ["/path/to/france-photo-1.jpg", "/path/to/france-photo-2.jpg"],
+    photos: [
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120607/photo_1_2025-10-22_15-09-37_wi1f9x.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120608/photo_5_2025-10-22_15-09-37_eyjgsx.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120608/photo_15_2025-10-22_15-09-37_jtmyda.jpg",
+    ],
   },
   {
     id: "Singapore",
     name: "Singapore",
     year: "2022",
     photos: [
-      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&h=400&fit=crop",
-      "/path/to/japan-photo-2.jpg",
-      "/path/to/japan-photo-3.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120608/photo_17_2025-10-22_15-09-37_jhqyju.jpg",
+      "https://res.cloudinary.com/dnpr1pcz3/image/upload/v1761120608/photo_16_2025-10-22_15-09-37_n1twnj.jpg",
     ],
   },
 ];

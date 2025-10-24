@@ -1,14 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import {
-  Sun,
-  Moon,
-  X,
-  Minimize2,
-  Square,
-  ChevronRight,
-  FileText,
-} from "lucide-react";
+import { X, ChevronRight, FileText, Languages } from "lucide-react";
+import { useLanguage } from "../ui/LanguageContext"; // adjust path as needed
 
 interface Tab {
   id: string;
@@ -24,6 +17,8 @@ interface NavbarProps {
 }
 
 const Navbar = ({ tabs, activeTab, onTabClick, onTabClose }: NavbarProps) => {
+  const { language, toggleLanguage, t } = useLanguage();
+
   const [showOverflow, setShowOverflow] = useState(false);
   const [visibleTabCount, setVisibleTabCount] = useState(10);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -210,6 +205,13 @@ const Navbar = ({ tabs, activeTab, onTabClick, onTabClose }: NavbarProps) => {
 
         {/* Right side controls */}
         <div className="flex items-center space-x-1 px-2 flex-shrink-0">
+          <button
+            onClick={toggleLanguage}
+            className="p-1.5 rounded hover:bg-gray-600 text-[#eaeaea] transition-colors duration-150"
+            title={t("nav.language.title")}
+          >
+            <Languages size={12} />
+          </button>
           <a
             href="/resume/KaungMyatSoe_CV.pdf"
             target="_blank"

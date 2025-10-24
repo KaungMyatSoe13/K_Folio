@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbars/Navbar";
 import SideNavbar from "@/components/Navbars/SideNavbar";
 import { shareTechMono } from "./fonts/fonts";
+import { LanguageProvider } from "../components/ui/LanguageContext"; // Updated import path
 
 import "./globals.css";
 
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={shareTechMono.className}>
       <body>
-        <div className="flex">
-          <main className="flex-1">{children}</main>
-        </div>
+        <LanguageProvider>
+          <div className="flex">
+            <main className="flex-1">{children}</main>
+          </div>
+        </LanguageProvider>
       </body>
     </html>
   );

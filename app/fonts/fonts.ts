@@ -3,6 +3,14 @@ import { VT323 } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
 import { Press_Start_2P } from "next/font/google";
 import localFont from "next/font/local";
+import { Kaisei_Decol } from "next/font/google";
+
+export const kaiseiDecol = Kaisei_Decol({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-kaisei-decol",
+  display: "swap",
+});
 
 export const pressStart2P = Press_Start_2P({
   subsets: ["latin"],

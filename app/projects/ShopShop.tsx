@@ -6,9 +6,11 @@ import ProjectDetails from "../../components/projects/ProjectDetails";
 import ProjectTechnologies from "../../components/projects/ProjectTechnologies";
 import ProjectSection from "../../components/projects/ProjectSection";
 import TypingText from "@/components/ui/TypingText";
+import { useLanguage } from "../../components/ui/LanguageContext";
 
 export default function ShopShop() {
   const project = projectDetails.shopshop;
+  const { t } = useLanguage();
 
   // Define image sections with titles
   const userSections = [
@@ -36,7 +38,7 @@ export default function ShopShop() {
       {/* Project Details Grid */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 text-gray-300">
         <ProjectDetails
-          shortDescription={project.shortDescription}
+          shortDescription={t(`projects.shopshop.description`)}
           platform={project.platform}
           role={project.role}
           year={project.year}

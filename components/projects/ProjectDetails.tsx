@@ -1,6 +1,8 @@
 import React from "react";
 import AnimatedCard from "@/components/ui/AnimatedCard";
 import { Globe, ExternalLink } from "lucide-react";
+import { useLanguage } from "../ui/LanguageContext";
+import { Kaisei_Decol } from "next/font/google";
 
 interface ProjectDetailsProps {
   shortDescription: string;
@@ -20,21 +22,24 @@ export default function ProjectDetails({
   year,
   links,
 }: ProjectDetailsProps) {
+  const { t } = useLanguage();
+
   return (
     <AnimatedCard className="bg-gray-400/10 rounded-lg p-3 sm:p-4 md:col-span-2 lg:col-span-1 order-1">
       <h2 className="text-xl sm:text-2xl text-gray-200 mb-2 sm:mb-3 font-bold">
-        /DESCRIPTION
+        /{t("projects.description")}
       </h2>
       <div className="text-md sm:text-lg leading-relaxed space-y-2">
         <p className="uppercase">{shortDescription}</p>
         <p className="text-gray-400 text-md sm:text-lg">
-          PLATFORM: <span className="text-gray-200">{platform}</span>
+          {t("projects.platform")}:{" "}
+          <span className="text-gray-200">{platform}</span>
         </p>
         <p className="text-gray-400 text-md sm:text-lg">
-          ROLE: <span className="text-gray-200">{role}</span>
+          {t("projects.role")}: <span className="text-gray-200">{role}</span>
         </p>
         <p className="text-gray-400 text-md sm:text-lg">
-          Year: <span className="text-gray-200">{year}</span>
+          {t("projects.year")}: <span className="text-gray-200">{year}</span>
         </p>
       </div>
 

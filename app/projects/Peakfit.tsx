@@ -6,9 +6,11 @@ import ProjectDetails from "../../components/projects/ProjectDetails";
 import ProjectTechnologies from "../../components/projects/ProjectTechnologies";
 import ProjectSection from "../../components/projects/ProjectSection";
 import ProjectImages from "../../components/projects/ProjectImages";
+import { useLanguage } from "../../components/ui/LanguageContext";
 
 export default function Peakfit() {
   const project = projectDetails.peakfit;
+  const { t } = useLanguage();
 
   return (
     <ProjectLayout projectName={project.name} columns={6}>
@@ -20,7 +22,7 @@ export default function Peakfit() {
       {/* Project Details Grid */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 text-gray-300">
         <ProjectDetails
-          shortDescription={project.shortDescription}
+          shortDescription={t(`projects.peakfit.description`)}
           platform={project.platform}
           role={project.role}
           year={project.year}

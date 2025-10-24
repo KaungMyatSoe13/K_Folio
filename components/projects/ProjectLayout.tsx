@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { vt323, benzinSemibold } from "../../app/fonts/fonts";
+import { vt323, benzinSemibold, kaiseiDecol } from "../../app/fonts/fonts";
 import AsciiVerticalLine from "@/components/ui/AsciiVerticalLine";
 import AsciiLine from "@/components/ui/AsciiLine";
 import TypingText from "@/components/ui/TypingText";
 import AnimatedBackground from "@/components/ui/AnimatedBackground";
+import { Kaisei_Decol } from "next/font/google";
+import { useLanguage } from "../ui/LanguageContext";
 
 interface ProjectLayoutProps {
   projectName: string;
@@ -18,10 +20,14 @@ export default function ProjectLayout({
 }: ProjectLayoutProps) {
   const [isHeaderComplete, setIsHeaderComplete] = useState(false);
   const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
+  const { t, language } = useLanguage();
+
+  const displayFont =
+    language === "ja" ? kaiseiDecol.className : vt323.className;
 
   return (
     <div
-      className={`${vt323.className} flex flex-row justify-center sm:justify-start h-full w-full`}
+      className={`${displayFont} flex flex-row justify-center sm:justify-start h-full w-full`}
     >
       <AsciiVerticalLine className="opacity-50" />
       <div className="flex flex-col w-full relative">

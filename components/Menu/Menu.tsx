@@ -1,72 +1,77 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { gloriaHallelujah } from "@/app/fonts/fonts";
-
-const menuItems = [
-  {
-    name: "AboutMe",
-    content: "About",
-    design: (
-      <div
-        className={`flex bg-blue-500/10 h-[40vh] w-full sm:h-full items-center justify-center overflow-hidden ${gloriaHallelujah.className}`}
-      >
-        <span
-          className="font-bold leading-none"
-          style={{ fontSize: "clamp(2rem, min(20vh, 15vw), 25rem)" }}
-        >
-          Who?
-        </span>
-      </div>
-    ),
-  },
-  {
-    name: "Projects",
-    content: "Projects",
-    design: (
-      <div
-        className={`flex bg-blue-500/10 h-[40vh]  w-full sm:h-full items-center justify-center overflow-hidden ${gloriaHallelujah.className}`}
-      >
-        <span
-          className="font-bold leading-none"
-          style={{ fontSize: "clamp(2rem, min(20vh, 15vw), 25rem)" }}
-        >
-          Crafts
-        </span>
-      </div>
-    ),
-  },
-  {
-    name: "BeyondTech",
-    content: "BeyondTech",
-    design: (
-      <div
-        className={`flex bg-blue-500/10  h-[40vh] w-full sm:h-full items-center justify-center overflow-hidden ${gloriaHallelujah.className}`}
-      >
-        <span
-          className="font-bold leading-none"
-          style={{ fontSize: "clamp(1rem, min(15vh, 10vw), 20rem)" }}
-        >
-          Beyond
-          <br />
-          Tech!
-        </span>
-      </div>
-    ),
-  },
-];
+import { gloriaHallelujah, kaiseiDecol } from "@/app/fonts/fonts";
+import { useLanguage } from "../ui/LanguageContext";
 
 interface MenuProps {
   onMenuClick: (content: string) => void;
 }
 
 export default function Menu({ onMenuClick }: MenuProps) {
+  const { t, language } = useLanguage(); // ← Add language here
   const outerScrollRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [maxScroll, setMaxScroll] = useState(1);
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [smoothProgress, setSmoothProgress] = useState(0);
+
+  // ← Add conditional font
+  const displayFont =
+    language === "ja" ? kaiseiDecol.className : gloriaHallelujah.className;
+
+  const menuItems = [
+    {
+      name: "AboutMe",
+      content: "About",
+      design: (
+        <div
+          className={`flex bg-blue-500/10 h-[40vh] rounded-lg w-full sm:h-full items-center justify-center overflow-hidden ${displayFont}`}
+        >
+          <span
+            className="font-bold leading-none"
+            style={{ fontSize: "clamp(2rem, min(20vh, 15vw), 25rem)" }}
+          >
+            {t("menu.about.design")}
+          </span>
+        </div>
+      ),
+    },
+    {
+      name: "Projects",
+      content: "Projects",
+      design: (
+        <div
+          className={`flex bg-blue-500/10 h-[40vh] rounded-lg  w-full sm:h-full items-center justify-center overflow-hidden ${displayFont}`} // ← Changed here
+        >
+          <span
+            className="font-bold leading-none"
+            style={{ fontSize: "clamp(2rem, min(20vh, 15vw), 25rem)" }}
+          >
+            {t("menu.projects.design")}
+          </span>
+        </div>
+      ),
+    },
+    {
+      name: "BeyondTech",
+      content: "BeyondTech",
+      design: (
+        <div
+          className={`flex bg-blue-500/10  h-[40vh] w-full rounded-lg sm:h-full items-center justify-center overflow-hidden ${displayFont}`} // ← Changed here
+        >
+          <span
+            className="font-bold leading-none"
+            style={{ fontSize: "clamp(1rem, min(15vh, 10vw), 20rem)" }}
+          >
+            {t("menu.beyondtech.design")}
+          </span>
+        </div>
+      ),
+    },
+  ];
+
   useEffect(() => {
     const progress = Math.min(Math.max(scrollPosition / maxScroll, 0), 1);
 

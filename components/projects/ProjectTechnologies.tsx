@@ -1,5 +1,6 @@
 import React from "react";
 import AnimatedCard from "@/components/ui/AnimatedCard";
+import { useLanguage } from "../ui/LanguageContext";
 
 interface ProjectTechnologiesProps {
   technologies: {
@@ -12,16 +13,19 @@ interface ProjectTechnologiesProps {
 export default function ProjectTechnologies({
   technologies,
 }: ProjectTechnologiesProps) {
+  const { t } = useLanguage();
   return (
     <AnimatedCard className="bg-gray-400/10 rounded-lg p-3 sm:p-4 md:col-span-2 lg:col-span-1 order-2 lg:order-2">
       <h2 className="text-xl sm:text-2xl text-gray-200 mb-2 sm:mb-3 font-bold">
-        /TECHNOLOGIES
+        /{t("projects.technologies")}
       </h2>
       <div className="space-y-2 sm:space-3">
         {/* Frontend */}
         {technologies.frontend.length > 0 && (
           <div>
-            <p className="text-md sm:text-lg text-gray-400 mb-1">FRONTEND</p>
+            <p className="text-md sm:text-lg text-gray-400 mb-1">
+              {t("projects.frontend")}
+            </p>
             <div className="flex flex-wrap gap-1 sm:gap-2">
               {technologies.frontend.map((tech, index) => (
                 <span
@@ -38,7 +42,9 @@ export default function ProjectTechnologies({
         {/* Backend */}
         {technologies.backend.length > 0 && (
           <div>
-            <p className="text-md sm:text-lg text-gray-400 mb-1">BACKEND</p>
+            <p className="text-md sm:text-lg text-gray-400 mb-1">
+              {t("projects.backend")}
+            </p>
             <div className="flex flex-wrap gap-1 sm:gap-2">
               {technologies.backend.map((tech, index) => (
                 <span
@@ -55,7 +61,9 @@ export default function ProjectTechnologies({
         {/* Database */}
         {technologies.database.length > 0 && (
           <div>
-            <p className="text-md sm:text-lg text-gray-400 mb-1">DATABASE</p>
+            <p className="text-md sm:text-lg text-gray-400 mb-1">
+              {t("projects.database")}
+            </p>
             <div className="flex flex-wrap gap-1 sm:gap-2">
               {technologies.database.map((tech, index) => (
                 <span

@@ -1,6 +1,5 @@
 "use client";
 import React, { Suspense, lazy, memo, useMemo } from "react";
-import Menu from "../Menu/Menu";
 import SideNavbar from "../Navbars/SideNavbar";
 import { vt323 } from "../../app/fonts/fonts";
 import Kfolio from "./Kfolio";
@@ -10,7 +9,6 @@ const ShopShop = lazy(() => import("../../app/projects/ShopShop"));
 const PeakFit = lazy(() => import("../../app/projects/Peakfit"));
 const EmoFace = lazy(() => import("../../app/projects/EmoFace"));
 const KotobaLab = lazy(() => import("../../app/projects/KotobaLab"));
-// Use dynamic import for MyanglishTranslator to avoid the import issue
 const MyanglishTranslator = lazy(
   () => import("../../app/projects/MyanglishTranslator")
 );
@@ -34,8 +32,36 @@ const LoadingComponent = memo(() => (
     <div className="text-orange-400 text-xl mb-4">Loading Project...</div>
   </div>
 ));
+LoadingComponent.displayName = "LoadingComponent";
 
-// Memoized Input Component
+// Move componentMap outside the component to prevent recreation
+const COMPONENT_MAP: Record<string, React.ReactNode> = {
+  shopshop: (
+    <Suspense fallback={<LoadingComponent />}>
+      <ShopShop />
+    </Suspense>
+  ),
+  peakfit: (
+    <Suspense fallback={<LoadingComponent />}>
+      <PeakFit />
+    </Suspense>
+  ),
+  myanglish_translator: (
+    <Suspense fallback={<LoadingComponent />}>
+      <MyanglishTranslator />
+    </Suspense>
+  ),
+  emoface: (
+    <Suspense fallback={<LoadingComponent />}>
+      <EmoFace />
+    </Suspense>
+  ),
+  kotobalab: (
+    <Suspense fallback={<LoadingComponent />}>
+      <KotobaLab />
+    </Suspense>
+  ),
+};
 
 export default function Terminal({
   onMenuClick,
@@ -49,12 +75,6 @@ export default function Terminal({
     [tabs, activeTab]
   );
 
-  // Memoize mobile check with debouncing
-  const isMobile = useMemo(
-    () => typeof window !== "undefined" && window.innerWidth < 768,
-    [] // Only check once on mount
-  );
-
   // Memoized project component renderer
   const renderProjectComponent = useMemo(() => {
     if (!currentTab || currentTab.type !== "project") return null;
@@ -64,42 +84,8 @@ export default function Terminal({
       .replace(/\s+/g, "")
       .toLowerCase();
 
-    console.log(
-      "Rendering project:",
-      projectName,
-      "from tab:",
-      currentTab.name
-    );
-
-    const componentMap: Record<string, React.ReactNode> = {
-      shopshop: (
-        <Suspense fallback={<LoadingComponent />}>
-          <ShopShop />
-        </Suspense>
-      ),
-      peakfit: (
-        <Suspense fallback={<LoadingComponent />}>
-          <PeakFit />
-        </Suspense>
-      ),
-      myanglish_translator: (
-        <Suspense fallback={<LoadingComponent />}>
-          <MyanglishTranslator />
-        </Suspense>
-      ),
-      emoface: (
-        <Suspense fallback={<LoadingComponent />}>
-          <EmoFace />
-        </Suspense>
-      ),
-      kotobalab: (
-        <Suspense fallback={<LoadingComponent />}>
-          <KotobaLab />
-        </Suspense>
-      ),
-    };
     return (
-      componentMap[projectName] || (
+      COMPONENT_MAP[projectName] || (
         <div className={`${vt323.className} p-4`}>
           <div className="text-red-400 text-xl mb-4">Project Not Found</div>
           <div className="text-gray-300">
@@ -115,12 +101,6 @@ export default function Terminal({
 
   // If it's a project tab
   if (currentTab?.type === "project") {
-    // On mobile, redirect to SideTab instead of showing content here
-    if (isMobile && onProjectClick) {
-      onProjectClick(currentTab.name);
-      return null;
-    }
-
     // On desktop, show the project content directly
     return (
       <div className="flex flex-1 font-mono text-[#eaeaea] bg-[#282828] min-h-screen flex-row">
@@ -133,10 +113,6 @@ export default function Terminal({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {renderProjectComponent}
-          {/* <Watermark
-            text={currentTab.name.replace(/\.js$/, "")}
-            className={`absolute right-[-650] top-75 -translate-x-1/2 -rotate-90 scale-y-[1.4] inline-block h-fit leading-none text-[20vh] text-white/10 pointer-events-none select-none ${benzinSemibold.className}`}
-          /> */}
         </div>
       </div>
     );

@@ -6,6 +6,8 @@ import { vt323 } from "../../app/fonts/fonts";
 import styles from "../PortfolioCSS/ProjectsSection.module.css";
 import { projectDetails } from "../data/projectDetails";
 import { Video } from "lucide-react";
+import { useLanguage } from "../ui/LanguageContext";
+import { kaiseiDecol } from "../../app/fonts/fonts";
 
 interface ProjectsSectionProps {
   onProjectClick?: (projectName: string) => void;
@@ -31,6 +33,9 @@ export default function ProjectsSection({
   };
 
   const currentProject = getCurrentProject();
+  const { t, language } = useLanguage();
+  const displayFont =
+    language === "ja" ? kaiseiDecol.className : vt323.className;
 
   return (
     <div className="max-h-screen">
@@ -40,9 +45,9 @@ export default function ProjectsSection({
       {/* ASCII Header Box */}
       <div className="text-gray-400 text-center flex flex-row">
         <div
-          className={`text-white text-lg sm:text-xl lg:text-2xl font-bold py-2 ${vt323.className}`}
+          className={`text-white text-lg sm:text-xl lg:text-2xl font-bold py-2 ${displayFont}`}
         >
-          SELECTED PROJECTS
+          {t("projects.header")}
         </div>
       </div>
       <div className="text-gray-400">

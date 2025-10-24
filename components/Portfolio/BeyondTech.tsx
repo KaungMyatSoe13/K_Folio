@@ -6,6 +6,8 @@ import { FaSpotify } from "react-icons/fa";
 import { s } from "framer-motion/client";
 import TypingText from "../ui/TypingText";
 import AnimatedCard from "../ui/AnimatedCard";
+import { useLanguage } from "../ui/LanguageContext";
+import { kaiseiDecol } from "../../app/fonts/fonts";
 import {
   sections,
   artists,
@@ -22,6 +24,11 @@ const BeyondTech = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
   const [expandedCountry, setExpandedCountry] = useState<string | null>(null);
+  const { t, language } = useLanguage();
+  const displayFont =
+    language === "ja" ? kaiseiDecol.className : benzinSemibold.className;
+  const displayFontVT =
+    language === "ja" ? kaiseiDecol.className : vt323.className;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -112,17 +119,15 @@ const BeyondTech = () => {
       <div className="max-w-6xl mx-auto pt-10 px-4 sm:px-6">
         <div className="mb-16">
           <AnimatedCard
-            className={`text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-4 ${benzinSemibold.className}`}
+            className={`text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-4 ${displayFont}`}
             delay={0.1}
           >
-            Beyond the Code
+            {t("beyond.header")}
           </AnimatedCard>
 
           <TypingText
-            text={
-              "Life's more than syntax and algorithms. Here's what makes me tick outside of tech."
-            }
-            className={`text-base sm:text-xl text-gray-400 max-w-2xl ${vt323.className}`}
+            text={t("beyond.description")}
+            className={`text-base sm:text-xl text-gray-400 max-w-2xl ${displayFontVT}`}
             charDelay={0.05}
             startDelay={0}
           ></TypingText>
@@ -154,7 +159,7 @@ const BeyondTech = () => {
                     <div className="relative z-10 flex flex-col items-center text-center">
                       <Icon className="w-12 h-12 text-white mb-4" />
                       <h3 className="text-2xl font-bold text-white">
-                        {section.title}
+                        {t(`beyond.${section.id}`)}
                       </h3>
                     </div>
                   </button>
@@ -173,10 +178,8 @@ const BeyondTech = () => {
           }`}
         >
           <div className="mb-8">
-            <h2
-              className={`text-3xl font-bold text-white mb-8 ${benzinSemibold.className}`}
-            >
-              Music I Vibe To
+            <h2 className={`text-3xl font-bold text-white mb-8 ${displayFont}`}>
+              {t("beyond.music_description")}
             </h2>
             <div className="bg-gray-800/50 p-4  ">
               <ol className="space-y-4">
@@ -250,8 +253,7 @@ const BeyondTech = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-green-500/50 mt-5 hover:bg-green-600 text-white font-semibold transition-colors duration-300"
               >
-                Lets Share our Taste:
-                <FaSpotify className="w-5 h-5" />
+                {t("beyond.share")} <FaSpotify className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -269,7 +271,7 @@ const BeyondTech = () => {
         >
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-white mb-8">
-              Places I've Explored
+              {t("beyond.travel")}
             </h2>
             <div className="space-y-4">
               {countries.map((country) => (
@@ -286,7 +288,7 @@ const BeyondTech = () => {
                     className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-700/50 transition-colors duration-200"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="text-2xl">🌍</span>
+                      {/* <span className="text-2xl">🌍</span> */}
                       <div className="text-left">
                         <h3 className="text-xl font-semibold text-white">
                           {country.name}
@@ -312,8 +314,11 @@ const BeyondTech = () => {
                   >
                     <div className="p-6 flex flex-col gap-4">
                       {country.photos.map((photo, index) => (
-                        <div
+                        <a
                           key={index}
+                          href={photo}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="group overflow-hidden rounded-lg aspect-video bg-gray-700"
                         >
                           <img
@@ -321,7 +326,7 @@ const BeyondTech = () => {
                             alt={`${country.name} ${index + 1}`}
                             className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                           />
-                        </div>
+                        </a>
                       ))}
                     </div>
                   </div>

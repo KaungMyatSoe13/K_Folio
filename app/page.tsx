@@ -190,29 +190,45 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right side - SideTab with its own navbar */}
-          {showSideTab && !isProjectActive && (
+          {/* Right side - SideTab with smooth transitions */}
+          <div
+            className={`flex flex-col h-full overflow-hidden bg-gray-900 transition-all duration-700 ease-in-out ${
+              showSideTab && !isProjectActive
+                ? sideTabContent === "Projects"
+                  ? "w-full md:w-[50%] lg:w-[45%] xl:w-[40%]"
+                  : sideTabContent === "About"
+                  ? "w-full md:w-[50%] lg:w-[45%] xl:w-[50%]"
+                  : sideTabContent === "BeyondTech"
+                  ? "w-full md:w-[50%] lg:w-[45%] xl:w-[50%]"
+                  : "w-full md:w-[50%] lg:w-[45%] xl:w-[30%]"
+                : "w-0"
+            }`}
+          >
             <div
-              className={`flex flex-col h-full w-full overflow-y-hidden md:w-[50%] lg:w-[45%] ${
-                sideTabContent === "Projects" ? "xl:w-[40%]" : "xl:w-[30%]"
-              } ${sideTabContent === "About" ? "xl:w-[50%]" : "xl:w-[30%]"} ${
-                sideTabContent === "BeyondTech" ? "xl:w-[50%]" : "xl:w-[30%]"
-              } bg-gray-900`}
+              className={`h-full flex flex-col transition-opacity duration-700 ease-in-out ${
+                showSideTab && !isProjectActive
+                  ? "opacity-100"
+                  : "opacity-0 pointer-events-none"
+              }`}
             >
-              <SideTabNavbar
-                onClose={handleCloseSideTab}
-                menuTabs={sideTabMenuTabs}
-                activeTab={activeSideTab}
-                onTabClick={handleSideTabClick}
-                onTabClose={handleSideTabClose}
-              />
+              {showSideTab && !isProjectActive && (
+                <>
+                  <SideTabNavbar
+                    onClose={handleCloseSideTab}
+                    menuTabs={sideTabMenuTabs}
+                    activeTab={activeSideTab}
+                    onTabClick={handleSideTabClick}
+                    onTabClose={handleSideTabClose}
+                  />
 
-              <SideTab
-                content={sideTabContent}
-                onProjectClick={handleProjectClick}
-              />
+                  <SideTab
+                    content={sideTabContent}
+                    onProjectClick={handleProjectClick}
+                  />
+                </>
+              )}
             </div>
-          )}
+          </div>
 
           {/* Slide-in menu when project is active */}
           {isProjectActive && (
@@ -224,6 +240,8 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {/* Mobile: show one at a time with transitions */}
 
       {/* Mobile: show one at a time */}
       <div className="flex md:hidden w-full flex-col">
