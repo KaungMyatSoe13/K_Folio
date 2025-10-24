@@ -74,7 +74,7 @@ export const projects: Record<string, Project> = {
     year: "2024",
     status: "completed",
     images: ["/PeakFit/PeakFitAdmin.png"],
-    video: ["/PeakFit/PeakFitApp.mp4", "/PeakFit/PeakFItWeb.mp4"],
+    video: ["/PeakFit/PeakFitApp.mp4", "/PeakFit/PeakFitWeb.mp4"],
   },
 
   shopshop: {
