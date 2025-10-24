@@ -70,8 +70,29 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({
   };
 
   const [position, setPosition] = useState(getInitialPosition());
-  const timeRef = useRef(Math.random() * 10); // Random start time
+  const animationRef = useRef<number | null>(null);
 
+  useEffect(() => {
+    let time = Math.random() * 10;
+
+    const animate = () => {
+      time += 0.01;
+
+      const newX = 50 + Math.sin(time) * 20;
+      const newY = 50 + Math.cos(time * 0.8) * 20;
+
+      setPosition({ x: newX, y: newY });
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
   useEffect(() => {
     const handleHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;

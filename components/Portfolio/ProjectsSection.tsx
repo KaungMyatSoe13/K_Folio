@@ -57,7 +57,7 @@ export default function ProjectsSection({
     language === "ja" ? kaiseiDecol.className : vt323.className;
 
   return (
-    <div className="max-h-screen">
+    <div className="max-h-screen overflow-x-hidden">
       <div className="text-gray-400">
         <AsciiLine char="=" />
       </div>
@@ -174,7 +174,7 @@ export default function ProjectsSection({
       </div>
 
       {/* Mobile Card View */}
-      <div className="block sm:hidden space-y-3">
+      <div className="block sm:hidden space-y-3 overflow-hidden">
         {projects.map((project, index) => (
           <div
             key={index}
@@ -202,7 +202,11 @@ export default function ProjectsSection({
 
         {/* Mobile Preview Section */}
         {hoveredProject && currentProject && (
-          <div className="mt-4 border border-gray-600 bg-gray-800/50 p-3">
+          <div
+            className="relative w-full max-w-full rounded-lg overflow-hidden bg-gray-900 border border-gray-700"
+            style={{ aspectRatio: "16/9" }}
+          >
+            {" "}
             <div className="text-gray-400 text-xs mb-2 font-mono">
               PREVIEW: {hoveredProject}
             </div>
