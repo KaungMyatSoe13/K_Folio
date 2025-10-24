@@ -45,13 +45,19 @@ export default function ProjectVideo({
         <div className="relative w-full h-full flex items-center justify-center">
           {videoSrc ? (
             <video
+              key={videoSrc}
               src={videoSrc}
               autoPlay
               muted
+              loop
               playsInline
-              controls={false}
+              preload="metadata"
               className="w-full h-full object-contain rounded-2xl"
               style={{ maxHeight: "100%" }}
+              onError={(e) => {
+                console.error("Video failed to load:", videoSrc);
+                console.error("Error details:", e);
+              }}
             >
               Your browser does not support the video tag.
             </video>
