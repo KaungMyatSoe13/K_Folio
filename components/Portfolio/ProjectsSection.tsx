@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import AsciiLine from "../ui/AsciiLine";
 import { projects } from "../data/projects";
@@ -17,6 +17,25 @@ export default function ProjectsSection({
   onProjectClick,
 }: ProjectsSectionProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [videoCache, setVideoCache] = useState<Record<string, boolean>>({});
+
+  // Preload videos on mount
+  useEffect(() => {
+    projects.forEach((project) => {
+      const projectKey = project.name.toLowerCase().replace(/\s+/g, "");
+      const projectData =
+        projectDetails[projectKey as keyof typeof projectDetails];
+
+      if (projectData?.video?.[0]) {
+        const video = document.createElement("video");
+        video.preload = "metadata";
+        video.src = projectData.video[0];
+        video.onloadedmetadata = () => {
+          setVideoCache((prev) => ({ ...prev, [projectKey]: true }));
+        };
+      }
+    });
+  }, []);
 
   const handleProjectClick = (projectName: string) => {
     if (onProjectClick) {
@@ -107,19 +126,21 @@ export default function ProjectsSection({
                   <div
                     className="relative w-full rounded-lg overflow-hidden shadow-lg bg-gray-900 border border-gray-700"
                     style={{
-                      aspectRatio: "16/9", // More standard aspect ratio
-                      maxHeight: "60vh", // Prevent it from being too tall
+                      aspectRatio: "16/9",
+                      maxHeight: "60vh",
                     }}
                   >
                     {/* Media Container */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       {currentProject.video && currentProject.video[0] ? (
                         <video
+                          key={currentProject.video[0]}
                           src={currentProject.video[0]}
                           autoPlay
                           muted
                           playsInline
                           loop
+                          preload="metadata"
                           controls={false}
                           className="w-full h-full object-contain"
                         >
@@ -192,11 +213,13 @@ export default function ProjectsSection({
               <div className="absolute inset-0 flex items-center justify-center">
                 {currentProject.video && currentProject.video[0] ? (
                   <video
+                    key={currentProject.video[0]}
                     src={currentProject.video[0]}
                     autoPlay
                     muted
                     playsInline
                     loop
+                    preload="metadata"
                     controls={false}
                     className="w-full h-full object-contain"
                   >
