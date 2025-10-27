@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
+import { gloriaHallelujah } from "../../app/fonts/fonts";
+import { benzinSemibold } from "../../app/fonts/fonts";
 interface LoadingScreenProps {
   onLoadComplete: () => void;
 }
 
 export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState("Initializing");
+  const [loadingText, setLoadingText] = useState("Let Me Cook");
 
   useEffect(() => {
-    const texts = [
-      "Initializing",
-      "Loading projects",
-      "Preparing media",
-      "Almost there",
-      "Ready",
-    ];
+    const texts = ["Let Me Cook"];
 
     let currentIndex = 0;
     let completed = false;
@@ -30,14 +25,14 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
 
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100 && !completed) {
+        if (prev >= 98 && !completed) {
           completed = true;
           clearInterval(progressInterval);
           clearInterval(textInterval);
           setTimeout(() => {
             onLoadComplete();
           }, 300);
-          return 100;
+          return 98;
         }
         return prev + 2;
       });
@@ -74,8 +69,16 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-bold text-cyan-400 mb-2">K_folio</h1>
-          <p className="text-gray-400 text-sm font-mono">{loadingText}...</p>
+          <h1
+            className={`text-4xl font-bold text-cyan-400 mb-2 ${benzinSemibold.className}`}
+          >
+            K_folio
+          </h1>
+          <p
+            className={`text-gray-400 text-sm font-mono ${gloriaHallelujah.className}`}
+          >
+            {loadingText}...
+          </p>
         </motion.div>
 
         {/* Progress Bar */}
@@ -99,9 +102,7 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="text-gray-500 font-mono text-xs"
-          >
-            [████████████████████████]
-          </motion.div>
+          ></motion.div>
         </div>
       </div>
     </motion.div>

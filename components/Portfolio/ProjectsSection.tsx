@@ -201,7 +201,7 @@ export default function ProjectsSection({
         ))}
 
         {/* Mobile Preview Section */}
-        {hoveredProject && currentProject && (
+        {/* {hoveredProject && currentProject && (
           <div
             className="relative w-full max-w-full rounded-lg overflow-hidden bg-gray-900 border border-gray-700"
             style={{ aspectRatio: "16/9" }}
@@ -246,7 +246,7 @@ export default function ProjectsSection({
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
