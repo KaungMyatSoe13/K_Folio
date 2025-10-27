@@ -19,6 +19,8 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
     ];
 
     let currentIndex = 0;
+    let completed = false;
+
     const textInterval = setInterval(() => {
       if (currentIndex < texts.length - 1) {
         currentIndex++;
@@ -28,19 +30,34 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
 
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
+        if (prev >= 100 && !completed) {
+          completed = true;
           clearInterval(progressInterval);
           clearInterval(textInterval);
-          setTimeout(onLoadComplete, 300);
+          setTimeout(() => {
+            onLoadComplete();
+          }, 300);
           return 100;
         }
         return prev + 2;
       });
     }, 50);
 
+    // Safety timeout - force complete after 5 seconds
+    const safetyTimeout = setTimeout(() => {
+      if (!completed) {
+        completed = true;
+        clearInterval(progressInterval);
+        clearInterval(textInterval);
+        setProgress(100);
+        onLoadComplete();
+      }
+    }, 5000);
+
     return () => {
       clearInterval(progressInterval);
       clearInterval(textInterval);
+      clearTimeout(safetyTimeout);
     };
   }, [onLoadComplete]);
 
