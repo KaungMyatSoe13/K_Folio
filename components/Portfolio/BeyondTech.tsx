@@ -29,6 +29,13 @@ const BeyondTech = () => {
     language === "ja" ? kaiseiDecol.className : benzinSemibold.className;
   const displayFontVT =
     language === "ja" ? kaiseiDecol.className : vt323.className;
+  const [audioCache, setAudioCache] = useState<
+    Record<string, HTMLAudioElement>
+  >({});
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
+    null
+  );
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const checkMobile = () => {
@@ -80,11 +87,25 @@ const BeyondTech = () => {
     songUrl: string,
     e: React.MouseEvent
   ) => {
-    setHoveredArtist(artistId);
-    setCursorPos({ x: e.clientX, y: e.clientY });
-    if (!isMobile) {
-      handlePlay(artistId, songUrl);
+    if (isMobile) return;
+
+    // Stop any currently playing audio
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
     }
+
+    // Use cached audio
+    const audio = audioCache[artistId];
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch((err) => console.log("Audio play failed:", err));
+      setCurrentAudio(audio);
+      setPlayingId(artistId);
+    }
+
+    // Set position for audio preview (if you have a floating audio indicator)
+    setMousePosition({ x: e.clientX, y: e.clientY });
   };
 
   const handleArtistMouseMove = (e: React.MouseEvent) => {
@@ -92,12 +113,15 @@ const BeyondTech = () => {
   };
 
   const handleArtistMouseLeave = () => {
-    setHoveredArtist(null);
-    if (!isMobile && playingId && audioRefs.current[playingId]) {
-      audioRefs.current[playingId].pause();
-      audioRefs.current[playingId].currentTime = 0;
-      setPlayingId(null);
+    if (isMobile) return;
+
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
     }
+
+    setPlayingId(null);
+    setCurrentAudio(null);
   };
 
   const handleGameHover = (gameId: string, e: React.MouseEvent) => {
@@ -112,6 +136,25 @@ const BeyondTech = () => {
   const handleGameMouseLeave = () => {
     setHoveredGame(null);
   };
+
+  useEffect(() => {
+    artists.forEach((artist) => {
+      const audio = new Audio();
+      audio.preload = "auto";
+      audio.src = artist.songUrl;
+      audio.oncanplaythrough = () => {
+        setAudioCache((prev) => ({ ...prev, [artist.id]: audio }));
+      };
+    });
+
+    // Cleanup
+    return () => {
+      Object.values(audioCache).forEach((audio) => {
+        audio.pause();
+        audio.src = "";
+      });
+    };
+  }, []);
 
   return (
     <div className={`min-h-screen bg-gray-900 overflow-x-hidden`}>

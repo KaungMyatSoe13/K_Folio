@@ -5,6 +5,11 @@ import SideTab from "@/components/Portfolio/SideTab";
 import Navbar from "@/components/Navbars/Navbar";
 import SideTabNavbar from "@/components/Navbars/SideTabNavbar";
 import SlideInMenu from "@/components/Menu/SlideInMenu";
+import { useEffect } from "react";
+import { projects } from "@/components/data/projects";
+import { projectDetails } from "@/components/data/projectDetails";
+import { usePreloader } from "../components/hooks/usePreloader";
+import { artists } from "../components/data/beyondTech"; // Your artists data
 
 interface Tab {
   id: string;
@@ -167,6 +172,26 @@ export default function Home() {
     }
   };
 
+  const isLoaded = usePreloader({
+    videos: projects
+      .map((p) => {
+        const key = p.name.toLowerCase().replace(/\s+/g, "");
+        return projectDetails[key as keyof typeof projectDetails]?.video?.[0];
+      })
+      .filter((url): url is string => Boolean(url)),
+
+    images: [
+      "/images/profile.jpg",
+      "/images/schools/uow.jpg",
+      "/images/schools/sim.jpg",
+    ],
+
+    audios: artists.map((a) => a.songUrl),
+  });
+
+  if (!isLoaded) {
+    return null; // LoadingScreen from layout will show
+  }
   return (
     <main className="max-h-screen flex">
       {/* Desktop & larger: side by side */}
