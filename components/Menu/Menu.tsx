@@ -103,6 +103,60 @@ export default function Menu({ onMenuClick }: MenuProps) {
       setMaxScroll(max > 0 ? max : 1);
     };
 
+    // Add after updateMaxScroll() call and before the return statement:
+
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      isDragging = true;
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+      container.style.cursor = "grabbing";
+    };
+
+    const handleMouseUp = () => {
+      isDragging = false;
+      container.style.cursor = "grab";
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 1; // Multiply for faster scroll
+      container.scrollLeft = scrollLeft - walk;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      // Check if we're on mobile/tablet (below 768px)
+      if (window.innerWidth < 768) {
+        // Let vertical scrolling work normally on mobile
+        return;
+      }
+
+      // Only convert vertical to horizontal if it's purely vertical scroll (mouse wheel)
+      // Let trackpad horizontal scrolling work normally
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        // Trackpad horizontal scroll - let it work normally
+        return;
+      }
+
+      // Mouse wheel vertical scroll - convert to horizontal
+      e.preventDefault();
+      container.scrollLeft -= e.deltaY * 3;
+    };
+    container.addEventListener("wheel", handleWheel, { passive: false });
+
+    container.style.cursor = "grab";
+    container.addEventListener("mousedown", handleMouseDown);
+    container.addEventListener("mouseup", handleMouseUp);
+    container.addEventListener("mouseleave", handleMouseUp);
+    container.addEventListener("mousemove", handleMouseMove);
+
+    // Also update the return cleanup:
+
     const handleScroll = () => setScrollPosition(container.scrollLeft);
 
     const handleResize = () => {
@@ -118,6 +172,11 @@ export default function Menu({ onMenuClick }: MenuProps) {
     return () => {
       container.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      container.removeEventListener("mousedown", handleMouseDown);
+      container.removeEventListener("mouseup", handleMouseUp);
+      container.removeEventListener("mouseleave", handleMouseUp);
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("wheel", handleWheel);
     };
   }, []);
 
@@ -127,7 +186,7 @@ export default function Menu({ onMenuClick }: MenuProps) {
   return (
     <div
       ref={outerScrollRef}
-      className={`h-full w-full bg-transparent overflow-x-auto overflow-y-auto sm:overflow-y-hidden scrollbar-thin scrollbar-thumb-cyan-400/30 scrollbar-track-transparent ${
+      className={`h-full w-full bg-transparent overflow-x-auto overflow-y-auto sm:overflow-y-hidden scrollbar-thin scrollbar-thumb-cyan-400/30 scrollbar-track-transparent select-none ${
         !isMounted ? "opacity-0" : "opacity-100 transition-opacity duration-300"
       }`}
     >
@@ -187,6 +246,7 @@ export default function Menu({ onMenuClick }: MenuProps) {
           ))}
         </div>
       </div>
+      {/* <div className="bg-blue-800">hello</div> */}
     </div>
   );
 }
