@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { gloriaHallelujah } from "../../app/fonts/fonts";
 import { benzinSemibold } from "../../app/fonts/fonts";
+import AnimatedBackground from "./AnimatedBackground";
+
 interface LoadingScreenProps {
   onLoadComplete: () => void;
 }
@@ -38,7 +40,6 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
       });
     }, 50);
 
-    // Safety timeout - force complete after 5 seconds
     const safetyTimeout = setTimeout(() => {
       if (!completed) {
         completed = true;
@@ -62,8 +63,15 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[9999] bg-[#282828] flex flex-col items-center justify-center"
     >
-      <div className="w-80 max-w-[90vw]">
-        {/* Logo or Title */}
+      {/* Add AnimatedBackground here */}
+      <AnimatedBackground
+        columns={6}
+        isVisible={true}
+        gridClassName="opacity-30"
+      />
+
+      {/* Add relative and z-10 to keep content above background */}
+      <div className="w-80 max-w-[90vw] relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -81,22 +89,10 @@ export default function LoadingScreen({ onLoadComplete }: LoadingScreenProps) {
           </p>
         </motion.div>
 
-        {/* Progress Bar */}
-        <div className="relative w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-          <motion.div
-            className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-400 to-blue-500"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.1 }}
-          />
-        </div>
-
-        {/* Progress Percentage */}
         <div className="text-center mt-4">
           <span className="text-cyan-400 font-mono text-lg">{progress}%</span>
         </div>
 
-        {/* ASCII Art Loading Animation */}
         <div className="mt-8 text-center">
           <motion.div
             animate={{ opacity: [0.3, 1, 0.3] }}
