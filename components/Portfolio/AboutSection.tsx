@@ -302,19 +302,26 @@ const AboutSection: React.FC = () => {
   const techStack: TechCategory[] = [
     {
       category: "Frontend",
-      techs: ["React", "Next.js", "TypeScript", "React Native", "Tailwind CSS"],
+      techs: ["React", "Next.js", "TypeScript", "WordPress", "Tailwind CSS"],
     },
     {
       category: "Animations",
-      techs: ["GSAP", "Three.js", "WebGL", "Framer Motion"],
+      techs: ["GSAP", "Figma", "Elementor", "Framer Motion"],
     },
     {
       category: "Backend",
-      techs: ["Node.js", "Supabase", "Firebase", "REST APIs"],
+      techs: ["Node.js", "Express.js", "PHP", "Python", "Flask", "REST APIs"],
     },
     {
       category: "Database",
-      techs: ["SQL", "PostgreSQL", "MongoDB", "NoSQL", "Cloudinary"],
+      techs: [
+        "SQL",
+        "PostgreSQL",
+        "MongoDB",
+        "NoSQL",
+        "Firebase",
+        "Cloudinary",
+      ],
     },
     {
       category: "AI/ML",
@@ -322,7 +329,7 @@ const AboutSection: React.FC = () => {
     },
     {
       category: "DevOps",
-      techs: ["Docker", "Git", "CI/CD", "Microsoft 365"],
+      techs: ["GitHub", "CI/CD", "Vercel", "Railway", "Google Colab"],
     },
   ];
 
