@@ -54,22 +54,22 @@ export default function Menu({ onMenuClick }: MenuProps) {
         </div>
       ),
     },
-    {
-      name: "BeyondTech",
-      content: "BeyondTech",
-      design: (
-        <div
-          className={`flex bg-blue-500/10  h-[40vh] w-full rounded-lg sm:h-full items-center justify-center overflow-hidden ${displayFont}`} // ← Changed here
-        >
-          <span
-            className="font-bold leading-none"
-            style={{ fontSize: "clamp(1rem, min(15vh, 10vw), 20rem)" }}
-          >
-            {t("menu.beyondtech.design")}
-          </span>
-        </div>
-      ),
-    },
+    // {
+    //   name: "BeyondTech",
+    //   content: "BeyondTech",
+    //   design: (
+    //     <div
+    //       className={`flex bg-blue-500/10  h-[40vh] w-full rounded-lg sm:h-full items-center justify-center overflow-hidden ${displayFont}`} // ← Changed here
+    //     >
+    //       <span
+    //         className="font-bold leading-none"
+    //         style={{ fontSize: "clamp(1rem, min(15vh, 10vw), 20rem)" }}
+    //       >
+    //         {t("menu.beyondtech.design")}
+    //       </span>
+    //     </div>
+    //   ),
+    // },
   ];
 
   useEffect(() => {
